@@ -1,0 +1,27 @@
+####################
+# General options
+####################
+####################
+# RabbitMQ options
+####################
+rabbitmq_user: "openstack"
+rabbitmq_password: "openstack"
+####################
+# Networking options
+####################
+network_manage_interface: "192.168.122.169"
+network_public_interface:
+network_storge_interface:
+network_vm_private_interface:
+
+openstack_vip_address: "192.168.122.169"
+################
+# Chrony options
+################
+external_ntp_servers: "tock.stdtime.gov.tw"
+
+####################
+# Database options
+####################
+mysql_root_password: "openstack"
+

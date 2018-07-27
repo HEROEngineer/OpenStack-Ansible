@@ -1,0 +1,30 @@
+{% if inventory_hostname not in groups['controller'] %}
+server {{ openstack_vip_address }} iburst
+{% else %}
+server {{ external_ntp_servers }} iburst
+{% endif %}
+
+keyfile /etc/chrony/chrony.keys
+
+commandkey 1
+
+driftfile /var/lib/chrony/chrony.drift
+
+log tracking measurements statistics
+
+logdir /var/log/chrony
+
+maxupdateskew 100.0
+
+dumponexit
+
+dumpdir /var/lib/chrony
+
+allow all
+
+logchange 0.5
+
+hwclockfile /etc/adjtime
+
+rtcsync
+

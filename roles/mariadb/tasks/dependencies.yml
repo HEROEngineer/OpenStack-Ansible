@@ -1,0 +1,17 @@
+- name: Install python-pymysql
+  apt:
+    name: "{{ item }}"
+  with_items:
+    - mariadb-server
+    - python-pymysql
+    - python-mysqldb
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: Install python-pymysql
+  yum:
+    name: "{{ item }}"
+  with_items:
+    - mariadb
+    - mariadb-server
+    - python2-PyMySQL
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'

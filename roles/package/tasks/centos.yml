@@ -1,0 +1,20 @@
+- name: Install centos-release-openstack-queens
+  yum:
+    name: "{{ item }}"
+  with_items:
+    - centos-release-openstack-queens
+    - https://rdoproject.org/repos/rdo-release.rpm
+
+- name: Upgrade the packages
+  yum:
+    name: '*'
+    state: latest
+
+
+- name: Install the OpenStack client
+  yum:
+    name: python-openstackclient
+
+- name: Install the OpenStack Selinux
+  yum:
+    name: openstack-selinux

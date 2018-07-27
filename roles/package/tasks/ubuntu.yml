@@ -1,0 +1,16 @@
+- name: Install software-properties-common
+  apt:
+    name: software-properties-common
+
+- name: Enable the OpenStack repository
+  command: add-apt-repository cloud-archive:queens
+
+- name: Upgrade the packages
+  apt:
+    update_cache: yes
+    upgrade: dist
+
+- name: Install the OpenStack client
+  apt:
+    name: python-openstackclient
+

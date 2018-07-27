@@ -1,0 +1,7 @@
+- name: Ubuntu Install OpenStack client
+  include: ubuntu.yml
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: Centos Install OpenStack client
+  include: centos.yml
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'

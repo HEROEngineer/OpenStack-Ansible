@@ -1,0 +1,7 @@
+- name: Install memcache
+  apt:
+    name: "{{ item }}"
+  with_items:
+    - memcached
+    - python-memcache
+

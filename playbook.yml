@@ -1,0 +1,20 @@
+---
+- hosts: controller
+  become: yes
+  roles:
+#    - { role: chrony }
+#    - { role: package }
+#    - { role: mariadb}
+#    - { role: rabbitmq}
+
+#- hosts: compute
+#  become: yes
+#  roles:
+#    - { role: chrony }
+#    - { role: package }
+
+#- hosts: storage
+#  become: yes
+#  roles:
+#    - { role: chrony }
+#    - { role: package }

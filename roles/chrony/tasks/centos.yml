@@ -1,0 +1,15 @@
+- name: Install chrony
+  yum:
+    name: chrony
+    update_cache: yes
+
+- name: Copy chrony.conf to /etc/chrony/
+  template:
+    src: chrony.conf.j2
+    dest: /etc/chrony/chrony.conf
+
+- name: Restart chrony service
+  systemd:
+    name: chronyd.service
+    enabled: yes
+    state: started
