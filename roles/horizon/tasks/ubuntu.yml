@@ -1,0 +1,13 @@
+- name: Install Dashboard
+  apt:
+    name: openstack-dashboard
+    update_cache: yes
+
+- name: Copy local_settings.py
+  include: config.yml
+
+- name: Restart the apache2 service
+  service:
+    name: apache2
+    state: restarted
+

@@ -1,0 +1,20 @@
+- name: Install Neutron
+  yum:
+    name: "{{ item }}"
+  with_items:
+    - openstack-neutron-linuxbridge
+    - ipset
+    - ebtables
+
+- name: Copy neuton.conf
+  include: config.yml
+
+- name: Restart the Neutron service
+  systemd:
+    name: "{{ item }}"
+    enabled: yes
+    state: started
+  with_items:
+    - openstack-neutron 
+    - openstack-neutron-ml2
+    - openstack-neutron-linuxbridge 

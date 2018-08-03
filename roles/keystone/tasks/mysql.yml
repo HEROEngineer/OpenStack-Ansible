@@ -1,0 +1,16 @@
+- name: Create the keystone database
+  mysql_db:
+    login_user: root
+    name: keystone
+    state: present
+
+- name: Grant proper access to the keystone database
+  mysql_user:
+    name: keystone
+    password: "{{ keystone_db_password }}"
+    priv: "keystone.*:ALL"
+    state: present
+    host: "{{ item }}"
+  with_items:
+    - localhost
+    - "%"

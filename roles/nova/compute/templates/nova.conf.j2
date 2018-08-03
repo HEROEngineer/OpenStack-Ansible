@@ -1,0 +1,67 @@
+[DEFAULT]
+{% if ansible_distribution == "CentOS"  or ansible_distribution == 'Red Hat Enterprise Linux' %}
+enabled_apis = osapi_compute,metadata
+{% endif %}
+state_path = /var/lib/nova
+instance_usage_audit = True
+instance_usage_audit_period = hour
+notify_on_state_change = vm_and_task_state
+my_ip = {{ ansible_default_ipv4.address }}
+use_neutron = True
+firewall_driver = nova.virt.firewall.NoopFirewallDriver
+transport_url = rabbit://{{ rabbitmq_user }}:{{ rabbitmq_password }}@{{ openstack_vip_address }}
+
+[api]
+auth_strategy = keystone
+
+[cells]
+enable = False
+
+[glance]
+api_servers = http://{{ openstack_vip_address }}:9292
+
+[oslo_concurrency]
+lock_path = /var/lib/nova/tmp
+
+[keystone_authtoken]
+auth_url = http://{{ openstack_vip_address }}:{{keystone_port}}/v3
+memcached_servers = {{ openstack_vip_address }}:11211
+auth_type = password
+project_domain_name = Default
+user_domain_name = Default
+project_name = service
+username = nova
+password = {{ nova_user_password }}
+
+[neutron]
+url = http://{{ openstack_vip_address }}:9696
+auth_url = http://{{ openstack_vip_address }}:{{keystone_port}}
+auth_type = password
+project_domain_name = Default
+user_domain_name = Default
+region_name = RegionOne
+project_name = service
+username = neutron
+password = {{ neutron_user_password }}
+
+[oslo_concurrency]
+lock_path = /var/lib/nova/tmp
+
+[oslo_messaging_notifications]
+driver = messagingv2
+
+[placement]
+os_region_name = RegionOne
+project_domain_name = Default
+project_name = service
+auth_type = password
+user_domain_name = Default
+auth_url = http://{{ openstack_vip_address }}:{{keystone_port}}/v3
+username = placement
+password = openstack
+
+[vnc]
+enabled = True
+vncserver_listen = 0.0.0.0
+vncserver_proxyclient_address = $my_ip
+novncproxy_base_url = http://{{ openstack_vip_address }}:6080/vnc_auto.html

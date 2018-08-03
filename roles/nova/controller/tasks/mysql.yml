@@ -1,0 +1,43 @@
+- name: Create the nova database
+  mysql_db:
+    login_user: root
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - nova_api
+    - nova
+    - nova_cell0
+
+- name: Clearing up previous settings on user
+  mysql_user:
+    host: '%'
+    password: '{{ nova_db_password }}'
+    priv: '*.*:USAGE'
+    state: present
+    user: nova
+
+- name: Grant proper access to the nova database
+  mysql_user:
+    name: nova
+    password: "{{ nova_db_password }}"
+    priv: "{{ item.db }}.*:ALL"
+    state: present
+    append_privs: 'yes'
+    host: "{{ item.host }}"
+  with_items:
+    - { db: nova_api, host: localhost}
+    - { db: nova_api, host: "%"}
+    - { db: nova, host: localhost}
+    - { db: nova, host: "%"}
+    - { db: nova_cell0, host: localhost}
+    - { db: nova_cell0, host: "%"}
+
+- name: Populate the nova service database
+  shell: "{{ item }}"
+  with_items:
+    - nova-manage api_db sync
+    - nova-manage cell_v2 map_cell0
+#    - nova-manage cell_v2 create_cell --name=cell1 --verbose
+    - nova-manage db sync
+  args:
+    executable: /bin/sh

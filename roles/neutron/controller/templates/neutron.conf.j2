@@ -1,0 +1,38 @@
+[DEFAULT]
+core_plugin = ml2
+#service_plugins = router,neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2
+service_plugins = router
+allow_overlapping_ips = true
+transport_url = rabbit://{{ rabbitmq_user }}:{{ rabbitmq_password }}@{{ openstack_vip_address }}
+auth_strategy = keystone
+notify_nova_on_port_status_changes = true
+notify_nova_on_port_data_changes = true
+
+[agent]
+root_helper = sudo /usr/bin/neutron-rootwrap /etc/neutron/rootwrap.conf
+
+[database]
+connection = mysql+pymysql://neutron:{{ neutron_db_password }}@{{ openstack_vip_address }}/neutron
+
+[keystone_authtoken]
+auth_url = http://{{ openstack_vip_address }}:{{keystone_port}}
+memcached_servers = {{ openstack_vip_address }}:11211
+auth_type = password
+project_domain_name = Default
+user_domain_name = Default
+project_name = service
+username = neutron
+password = {{ neutron_user_password }}
+
+[nova]
+auth_url = http://{{ openstack_vip_address }}:{{keystone_port}}
+auth_type = password
+project_domain_name = Default
+user_domain_name = Default
+region_name = RegionOne
+project_name = service
+username = nova
+password = {{ nova_user_password }}
+
+[oslo_messaging_notifications]
+driver = messagingv2

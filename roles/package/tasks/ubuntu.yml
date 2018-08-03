@@ -3,7 +3,10 @@
     name: software-properties-common
 
 - name: Enable the OpenStack repository
-  command: add-apt-repository cloud-archive:queens
+#  command: add-apt-repository cloud-archive:queens
+  apt_repository:
+    repo: cloud-archive:queens
+  state: present
 
 - name: Upgrade the packages
   apt:

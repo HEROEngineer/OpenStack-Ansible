@@ -1,0 +1,16 @@
+- name: Install etcd
+  yum:
+    name: etcd
+
+- name: Copy etcd.conf.yml to /etc/ctcd/
+  template:
+    src: centos-etcd.conf.j2
+    dest: /etc/etcd/etcd.conf
+
+- name: Start etcd service
+  systemd:
+    name: etcd
+    enabled: yes
+    state: started
+
+

@@ -1,0 +1,11 @@
+- name: Install nova-compute
+  apt:
+    name: nova-compute
+
+- name: Copy nova.conf
+  include: config.yml
+
+- name: Restart the Nova Compute service
+  service:
+    name: nova-compute
+    state: restarted

@@ -6,12 +6,24 @@
 #    - { role: package }
 #    - { role: mariadb}
 #    - { role: rabbitmq}
+#    - { role: memcached}
+#    - { role: etcd}
+#    - { role: keystone}
+#    - { role: glance}
+#    - { role: nova/controller}
+#    - { role: neutron/controller }
+    - { role: horizon }
+#    - { role: test}
 
-#- hosts: compute
-#  become: yes
-#  roles:
+
+- hosts: compute
+  become: yes
+  roles:
 #    - { role: chrony }
 #    - { role: package }
+#    - { role: nova/compute}
+#    - { role: test}
+#    - { role: neutron/compute }
 
 #- hosts: storage
 #  become: yes

@@ -6,7 +6,7 @@
 - name: Copy chrony.conf to /etc/chrony/
   template:
     src: chrony.conf.j2
-    dest: /etc/chrony/chrony.conf
+    dest: /etc/chrony.conf
 
 - name: Restart chrony service
   systemd:

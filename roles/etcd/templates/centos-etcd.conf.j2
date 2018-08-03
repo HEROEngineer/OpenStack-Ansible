@@ -1,0 +1,11 @@
+#[Member]
+ETCD_DATA_DIR="/var/lib/etcd/default.etcd"
+ETCD_LISTEN_PEER_URLS="{{ etcd_listen_peer_urls }}"
+ETCD_LISTEN_CLIENT_URLS="{{ etcd_listen_client_urls }}"
+ETCD_NAME="controller"
+#[Clustering]
+ETCD_INITIAL_ADVERTISE_PEER_URLS="{{ etcd_initial_advertise_peer_urls }}"
+ETCD_ADVERTISE_CLIENT_URLS="{{ etcd_advertise_client_urls }}"
+ETCD_INITIAL_CLUSTER="{{ etcd_initial_cluster }}"
+ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster-01"
+ETCD_INITIAL_CLUSTER_STATE="new"

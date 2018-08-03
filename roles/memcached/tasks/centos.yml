@@ -1,0 +1,17 @@
+- name: Install chrony
+  yum:
+    name: "{{ item }}"
+  with_items:
+    - memcached
+    - python-memcached
+
+- name: Copy memcached to /etc/sysconfig/
+  template:
+    src: memcached.j2
+    dest: /etc/sysconfig/memcached
+
+- name: Restart Memcached service
+  systemd:
+    name: memcached.service
+    enabled: yes
+    state: started

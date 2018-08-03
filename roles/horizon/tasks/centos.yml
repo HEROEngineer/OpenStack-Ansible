@@ -1,0 +1,14 @@
+- name: Install Dashboard
+  yum:
+    name: openstack-dashboard
+
+- name: Copy local_settings.py
+  include: config.yml
+
+- name: Restart the apache2 service
+  systemd:
+    name: "{{ item }}"
+    state: restarted
+  with_items:
+    - httpd.service
+    - memcached.service

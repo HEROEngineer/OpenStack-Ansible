@@ -5,3 +5,14 @@
     - memcached
     - python-memcache
 
+- name: Copy memcached.conf to /etc/
+  template:
+    src: memcached.conf.j2
+    dest: /etc/memcached.conf
+
+- name: Restart Memcached service
+  service:
+    name: memcached
+    state: restarted
+
+

@@ -1,0 +1,13 @@
+[DEFAULT]
+log_dir = /var/log/keystone
+
+[cors]
+allowed_origin = http://{{ openstack_vip_address }}:{{ grafana_port }}
+
+[credential]
+
+[database]
+connection = mysql+pymysql://keystone:{{ keystone_db_password }}@{{ openstack_vip_address }}/keystone
+
+[token]
+provider = fernet

@@ -4,4 +4,7 @@
 
 [compute]
 
-192.168.122.169   ansible_ssh_user=localadmin
+192.168.122.139   ansible_ssh_user=localadmin ansible_become_pass=openstack
+
+[env:children]
+controller

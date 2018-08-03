@@ -1,0 +1,5 @@
+- name: Copy nova.conf to /etc/nova/
+  template:
+    src: nova.conf.j2
+    dest: /etc/nova/nova.conf
+

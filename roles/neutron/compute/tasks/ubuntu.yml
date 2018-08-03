@@ -1,0 +1,14 @@
+- name: Install neutron
+  apt:
+    name: neutron-linuxbridge-agent
+
+- name: Copy neutron.conf
+  include: config.yml
+
+- name: Restart the Neutron service
+  service:
+    name: "{{ item }}"
+    state: restarted
+  with_items:
+    - nova-compute
+    - neutron-linuxbridge-agent

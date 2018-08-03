@@ -1,0 +1,9 @@
+- name: Copy neutron.conf to /etc/neutron/
+  template:
+    src: neutron.conf.j2
+    dest: /etc/neutron/neutron.conf
+
+- name: Copy linuxbridge_agent.ini to /etc/neutron/plugins/ml2/
+  template:
+    src: linuxbridge_agent.ini.j2
+    dest: /etc/neutron/plugins/ml2/linuxbridge_agent.ini

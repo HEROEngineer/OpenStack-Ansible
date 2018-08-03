@@ -1,6 +1,13 @@
 ####################
 # General options
 ####################
+time_zone: "Asia/Taipei"
+keystone_port: "5000"
+keystone_admin_password: "openstack"
+glance_user_password: "openstack"
+nova_user_password: "openstack"
+plancement_user_password: "openstack"
+neutron_user_password: "openstack"
 ####################
 # RabbitMQ options
 ####################
@@ -9,8 +16,8 @@ rabbitmq_password: "openstack"
 ####################
 # Networking options
 ####################
-network_manage_interface: "192.168.122.169"
-network_public_interface:
+network_manage_interface: "ens3"
+network_public_interface: "ens3"
 network_storge_interface:
 network_vm_private_interface:
 
@@ -24,4 +31,11 @@ external_ntp_servers: "tock.stdtime.gov.tw"
 # Database options
 ####################
 mysql_root_password: "openstack"
-
+keystone_db_password: "openstack"
+glance_db_password: "openstack"
+nova_db_password: "openstack"
+neutron_db_password: "openstack"
+####################
+# Grafana options
+####################
+grafana_port: "3000"

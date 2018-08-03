@@ -1,0 +1,31 @@
+- name: Install etcd
+  apt:
+    name: etcd
+- name: Create etcd directory
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: etcd
+    group: etcd
+    mode: 0755
+  with_items:
+    - /etc/etcd/
+    - /var/lib/etcd
+
+- name: Copy etcd.conf.yml to /etc/ctcd/
+  template:
+    src: ubuntu-etcd.conf.yml.j2
+    dest: /etc/etcd/etcd.conf.yml
+
+- name: Copy etcd.service to /lib/systemd/system/
+  template:
+    src: etcd.service.j2
+    dest: /lib/systemd/system/etcd.service
+
+- name: Start etcd service
+  systemd:
+    name: etcd
+    enabled: yes
+    state: started
+
+

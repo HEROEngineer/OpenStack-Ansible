@@ -1,0 +1,15 @@
+- name: Create glance user
+  command: openstack {{ keystone_auth }} user create --domain default --password {{ glance_user_password }} glance
+
+- name: Create admin role to the glance user and service project
+  command: openstack {{ keystone_auth }} role add --project service --user glance admin
+
+- name: Create glance service
+  command: openstack {{ keystone_auth }} service create --name glance --description "OpenStack Image" image
+
+- name: Create glance API endpoint
+  command: openstack {{ keystone_auth }} endpoint create --region RegionOne image "{{ item }}" http://{{ openstack_vip_address }}:9292
+  with_items:
+    - public
+    - internal
+    - admin

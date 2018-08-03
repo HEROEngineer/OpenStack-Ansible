@@ -1,0 +1,30 @@
+[DEFAULT]
+
+[database]
+connection = mysql+pymysql://glance:{{ glance_db_password }}@{{ openstack_vip_address }}/glance
+
+[glance_store]
+stores = file,http
+default_store = file
+filesystem_store_datadir = /var/lib/glance/images/
+
+[image_format]
+disk_formats = ami,ari,aki,vhd,vhdx,vmdk,raw,qcow2,vdi,iso,ploop.root-tar
+
+[keystone_authtoken]
+auth_uri = http://{{ openstack_vip_address }}:{{ keystone_port }}
+auth_url = http://{{ openstack_vip_address }}:{{ keystone_port }}
+memcached_servers = {{ openstack_vip_address }}:11211
+auth_type = password
+project_domain_name = Default
+user_domain_name = Default
+project_name = service
+username = glance
+password = {{ glance_user_password }}
+
+[oslo_messaging_notifications]
+driver = messagingv2
+
+[paste_deploy]
+flavor = keystone
+

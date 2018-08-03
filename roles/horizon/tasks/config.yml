@@ -1,0 +1,26 @@
+- name: Copy local_settings to /etc/openstack-dashboard
+  template:
+    src: local_settings.py.j2
+    dest: /etc/openstack-dashboard/local_settings.py
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: Configure openstack-dashboard.conf
+  lineinfile:
+    path: /etc/apache2/conf-available/openstack-dashboard.conf
+    insertafter: '^WSGIProcessGroup horizon'
+    line: 'WSGIApplicationGroup %{GLOBAL}'
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: Copy local_settings to /etc/openstack-dashboard
+  template:
+    src: local_settings.py.j2
+    dest: /etc/openstack-dashboard/local_settings
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: Configure openstack-dashboard.conf
+  lineinfile:
+    path: /etc/httpd/conf.d/openstack-dashboard.conf
+    regexp: '^WSGIProcessGroup'
+    insertafter: '^WSGIProcessGroup horizon'
+    line: 'WSGIApplicationGroup %{GLOBAL}'
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'

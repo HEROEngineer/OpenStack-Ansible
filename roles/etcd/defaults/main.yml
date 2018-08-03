@@ -1,0 +1,9 @@
+---
+
+etcd_client_port: 2379
+etcd_peer_port: 2380
+etcd_listen_peer_urls: http://{{ openstack_vip_address }}:{{ etcd_peer_port }}
+etcd_listen_client_urls: http://{{ openstack_vip_address }}:{{ etcd_client_port }}
+etcd_initial_advertise_peer_urls: http://{{ openstack_vip_address }}:{{ etcd_peer_port }}
+etcd_advertise_client_urls: http://{{ openstack_vip_address }}:{{ etcd_client_port }}
+etcd_initial_cluster: controller=http://{{ openstack_vip_address }}:{{ etcd_peer_port }}
