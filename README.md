@@ -26,13 +26,20 @@ Prepare ansible node and openstack node
 
 Install pip
 <pre><code>
-apt install python-pip
+apt update -y
+apt install python-pip -y
 </code></pre>
 
 Upgrade pip
 <pre><code>
 pip install -U pip
 </code></pre>
+
+Install and upgrade ansible
+<pre><code>
+apt install ansible -y
+pip install -U ansible
+</pre></code>
 
 Clone openstak-ansible
 <pre><code>
