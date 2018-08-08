@@ -45,7 +45,8 @@ cd openstack-ansible
 </code></pre>
 
 Add the machine info gathered above into a file called inventory. For inventory example:
-> **[all] section define openstack node hostname and ip, ansible will auto change openstack node hostname **
+>[all] section define openstack node hostname and ip, ansible will auto change openstack node hostname
+
 <pre><code>
 [all]
 controller    ansible_host=10.50.2.6
@@ -66,7 +67,7 @@ controller
 </code></pre>
 
 Set the variables in **group_vars/all.yml** to reflect you need options. For example:
-> openstack_vip_address is controller ip , 
+> openstack_vip_address is controller ip
 <pre><code>
 ####################
 # General options
@@ -124,9 +125,9 @@ grafana_port: "3000"
 </code></pre>
 
 Change your neutron_metada_secret in **group_vars/env.yml**
-</code></pre>
+<code><pre>
 metadata_secret: your_secret
-<pre><code>
+</pre></code>
 
 Copy ssh key to all openstack node
 <pre><code>
@@ -135,7 +136,12 @@ ssh-copy-id 10.50.2.7
 ssh-copy-id 10.50.2.8
 </code></pre>
 
-
+Run bootstrap-ubuntu-16.04.yml install python2.7 to openstack node
 <pre><code>
+ansible-playbook -i inventory bootstrap-ubuntu-16.04.yml
+</code></pre>
 
+Run deploy.yml to install OpenStack
+<pre><code>
+ansible-playbook -i inventory deploy.yml
 </code></pre>
