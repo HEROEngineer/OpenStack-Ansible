@@ -1,0 +1,21 @@
+- name: Install Cinder Volume
+  apt: 
+    name: "{{ item }}"
+  with_items:
+    - lvm2 
+    - thin-provisioning-tools
+    - cinder-volume
+
+- name: Create LVM physical volume
+  include: lvm.yml
+
+- name: Configure cinder
+  include: config.yml
+
+- name: Restart the Block Storage service
+  service:
+    name: "{{ item }}"
+    state: restarted
+  with_items:
+    - tgt
+    - cinder-volume

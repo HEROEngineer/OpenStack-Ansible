@@ -1,0 +1,4 @@
+- name: Copy ceilometer.conf to /etc/ceilometer/
+  template:
+    src: ceilometer.conf.j2
+    dest: /etc/ceilometer/ceilometer.conf

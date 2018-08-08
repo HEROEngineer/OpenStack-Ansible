@@ -1,0 +1,21 @@
+- name: Install glance
+  yum:
+    name: openstack-ceilometer-compute
+
+- name: Copy glance.conf
+  include: config.yml
+
+- name: Restart the ceilometer agent service
+  systemd:
+    name: "{{ item }}"
+    enabled: yes
+    state: started
+  with_items:
+    - openstack-ceilometer-compute.service
+
+- name: Restart the nova compute service
+  systemd:
+    name: "{{ item }}"
+    state: restarted
+  with_items:
+    - openstack-nova-compute.service

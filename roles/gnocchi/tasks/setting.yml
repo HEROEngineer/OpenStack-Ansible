@@ -1,0 +1,15 @@
+- name: Create gnocchi user
+  command: openstack {{ keystone_auth }} user create --domain default --password {{ gnocchi_user_password }} gnocchi
+
+- name: Create admin role to the gnocchi user and service project
+  command: openstack {{ keystone_auth }} role add --project service --user gnocchi admin
+
+- name: Create gnocchi service
+  command: openstack {{ keystone_auth }} service create --name gnocchi --description "Metric Service" metric
+
+- name: Create gnocchi API endpoint
+  command: openstack {{ keystone_auth }} endpoint create --region RegionOne metric  "{{ item }}" http://{{ openstack_vip_address }}:8041
+  with_items:
+    - public
+    - internal
+    - admin

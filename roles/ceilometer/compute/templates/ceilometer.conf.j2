@@ -1,0 +1,13 @@
+[DEFAULT]
+transport_url = rabbit://{{ rabbitmq_user }}:{{ rabbitmq_password }}@{{ openstack_vip_address }}
+
+[service_credentials]
+auth_url = http://{{ openstack_vip_address }}:{{keystone_port}}/v3
+auth_type = password
+project_domain_id = default
+user_domain_id = default
+project_name = service
+username = ceilometer
+password = {{ ceilometer_user_password }}
+interface = internalURL
+region_name = RegionOne

@@ -1,0 +1,5 @@
+- name: Copy heat.conf to /etc/heat/
+  template:
+    src: heat.conf.j2
+    dest: /etc/heat/heat.conf
+

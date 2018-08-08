@@ -1,0 +1,15 @@
+- name: Create aodh user
+  command: openstack {{ keystone_auth }} user create --domain default --password {{ aodh_user_password }} aodh
+
+- name: Create admin role to the aodh user and service project
+  command: openstack {{ keystone_auth }} role add --project service --user aodh admin
+
+- name: Create aodh service
+  command: openstack {{ keystone_auth }} service create --name aodh --description "Telemetry" alarming
+
+- name: Create aodh API endpoint
+  command: openstack {{ keystone_auth }} endpoint create --region RegionOne alarming "{{ item }}" http://{{ openstack_vip_address }}:8042
+  with_items:
+    - public
+    - internal
+    - admin

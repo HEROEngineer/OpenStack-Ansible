@@ -2,6 +2,7 @@
 - hosts: controller
   become: yes
   roles:
+#    - { role: common/hostname }
 #    - { role: chrony }
 #    - { role: package }
 #    - { role: mariadb}
@@ -12,21 +13,27 @@
 #    - { role: glance}
 #    - { role: nova/controller}
 #    - { role: neutron/controller }
-    - { role: horizon }
-#    - { role: test}
-
+#    - { role: horizon }
+#    - { role: cinder/controller }
+#    - { role: heat }
+#    - { role: aodh }
+#    - { role: gnocchi }
+    - { role: ceilometer/controller }
 
 - hosts: compute
   become: yes
   roles:
+#    - { role: common/hostname }
 #    - { role: chrony }
 #    - { role: package }
 #    - { role: nova/compute}
-#    - { role: test}
 #    - { role: neutron/compute }
+    - { role: ceilometer/compute }
 
-#- hosts: storage
-#  become: yes
-#  roles:
+- hosts: storage
+  become: yes
+  roles:
+#    - { role: common/hostname }
 #    - { role: chrony }
 #    - { role: package }
+#    - { role: cinder/storage }

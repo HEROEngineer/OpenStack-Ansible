@@ -1,0 +1,10 @@
+- name: Configure /etc/lvm/lvm.conf
+  lineinfile:
+    path: /etc/lvm/lvm.conf
+    insertafter: 'Accept every block device:'
+    line: '        filter = [ "a/{{ lvm_physical_volume }}/", "r/.*/"]'
+
+- name: Copy cinder.conf to /etc/cinder/
+  template:
+    src: cinder.conf.j2
+    dest: /etc/cinder/cinder.conf

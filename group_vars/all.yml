@@ -8,6 +8,11 @@ glance_user_password: "openstack"
 nova_user_password: "openstack"
 plancement_user_password: "openstack"
 neutron_user_password: "openstack"
+cinder_user_password: "openstack"
+heat_user_password: "openstack"
+aodh_user_password: "openstack"
+gnocchi_user_password: "openstack"
+ceilometer_user_password: "openstack"
 ####################
 # RabbitMQ options
 ####################
@@ -27,6 +32,11 @@ openstack_vip_address: "192.168.122.169"
 ################
 external_ntp_servers: "tock.stdtime.gov.tw"
 
+################
+# Cinder options
+################
+lvm_physical_volume: "vdb"
+
 ####################
 # Database options
 ####################
@@ -35,6 +45,10 @@ keystone_db_password: "openstack"
 glance_db_password: "openstack"
 nova_db_password: "openstack"
 neutron_db_password: "openstack"
+cinder_db_password: "openstack"
+heat_db_password: "openstack"
+aodh_db_password: "openstack"
+gnocchi_db_password: "openstack"
 ####################
 # Grafana options
 ####################

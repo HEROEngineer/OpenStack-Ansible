@@ -1,0 +1,20 @@
+- name: Install ceilometer
+  apt:
+    name: "{{ item }}"
+  with_items:
+    - ceilometer-agent-notification
+    - ceilometer-agent-central
+
+- name: Copy ceilometer config
+  include: config.yml
+
+- name: Prerequisites Database
+  include: mysql.yml
+
+- name: Restart the Telemetry  service
+  service:
+    name: "{{ item }}"
+    state: restarted
+  with_items:
+    - ceilometer-agent-notification
+    - ceilometer-agent-central

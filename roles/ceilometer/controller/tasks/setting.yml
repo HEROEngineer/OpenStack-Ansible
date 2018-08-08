@@ -1,0 +1,6 @@
+- name: Create ceilometer user
+  command: openstack {{ keystone_auth }} user create --domain default --password {{ ceilometer_user_password }} ceilometer
+
+- name: Create admin role to the ceilometer user and service project
+  command: openstack {{ keystone_auth }} role add --project service --user ceilometer admin
+

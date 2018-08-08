@@ -1,0 +1,24 @@
+- name: Install Cinder Volume
+  yum: "{{ item }}"
+  with_items:
+    - lvm2 
+    - device-mapper-persistent-data
+    - cinder-volume
+    - openstack-cinder 
+    - targetcli 
+    - python-keystone
+
+- name: Create LVM physical volume
+  include: lvm.yml
+
+- name: Configure lvm.conf
+  include: config.yml
+
+- name: Restart the Cinder service
+  systemd:
+    name: "{{ item }}"
+    enabled: yes
+    state: started
+  with_items:
+    - openstack-cinder-volume.service
+    - target.service

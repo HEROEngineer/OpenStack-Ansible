@@ -1,0 +1,12 @@
+- name: Create LVM volume group cinder-volumes
+  lvg:
+    vg: cinder-volumes
+    pvs: /dev/{{ lvm_physical_volume }} 
+
+#- name: Create LVM physical volume
+#  lvol:
+#    lv: /dev/{{ lvm_physical_volume }}
+#    vg: cinder-volumes
+#    pvs: /dev/{{ lvm_physical_volume }}
+#    size: 100%FREE
+#    state: present

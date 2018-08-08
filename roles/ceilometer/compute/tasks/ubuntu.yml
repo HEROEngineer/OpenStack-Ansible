@@ -1,0 +1,14 @@
+- name: Install ceilometer compute agent
+  apt:
+    name: ceilometer-agent-compute
+
+- name: Copy ceilometer.conf
+  include: config.yml
+
+- name: Restart the ceilometer agnet service
+  service:
+    name: "{{ item }}"
+    state: restarted
+  with_items:
+    - ceilometer-agent-compute
+    - nova-compute

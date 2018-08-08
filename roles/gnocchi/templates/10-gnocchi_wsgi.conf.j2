@@ -1,0 +1,17 @@
+Listen 8041
+<VirtualHost *:8041>
+  DocumentRoot /var/www/cgi-bin/gnocchi
+
+  <Directory /var/www/cgi-bin/gnocchi>
+    AllowOverride None
+    Require all granted
+  </Directory>
+
+  CustomLog /var/log/httpd/gnocchi_wsgi_access.log combined
+  ErrorLog /var/log/httpd/gnocchi_wsgi_error.log
+  SetEnvIf X-Forwarded-Proto https HTTPS=1
+  WSGIApplicationGroup %{GLOBAL}
+  WSGIDaemonProcess gnocchi display-name=gnocchi_wsgi user=gnocchi group=gnocchi processes=6 threads=6
+  WSGIProcessGroup gnocchi
+  WSGIScriptAlias / /var/www/cgi-bin/gnocchi/app
+</VirtualHost>

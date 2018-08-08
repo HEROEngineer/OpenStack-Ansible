@@ -2,11 +2,11 @@
   apt:
     name: glance
 
-- name: Prerequisites Database
-  include: mysql.yml
-
 - name: Copy glance.conf
   include: config.yml
+
+- name: Prerequisites Database
+  include: mysql.yml
 
 - name: Restart the Glance service
   service:

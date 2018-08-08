@@ -1,0 +1,21 @@
+- name: Create the gnocchi database
+  mysql_db:
+    login_user: root
+    name: gnocchi
+    state: present
+
+- name: Grant proper access to the gnocchi database
+  mysql_user:
+    name: gnocchi
+    password: "{{ gnocchi_db_password }}"
+    priv: "gnocchi.*:ALL"
+    state: present
+    host: "{{ item }}"
+  with_items:
+    - localhost
+    - "%"
+
+- name: Initialize Gnocchi
+  shell: gnocchi-upgrade
+  args:
+    executable: /bin/sh

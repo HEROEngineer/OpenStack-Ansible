@@ -1,0 +1,34 @@
+[DEFAULT]
+transport_url = rabbit://{{ rabbitmq_user }}:{{ rabbitmq_password }}@{{ openstack_vip_address }}
+coordination_url = file:///var/lib/gnocchi/locks
+
+[api]
+middlewares = oslo_middleware.cors.CORS
+middlewares = keystonemiddleware.auth_token.AuthProtocol
+auth_mode = keystone
+
+[cors]
+allowed_origin = http://{{ openstack_vip_address }}:{{ grafana_port }}
+
+[indexer]
+url = mysql+pymysql://gnocchi:{{ gnocchi_db_password }}@{{ openstack_vip_address }}/gnocchi
+
+[keystone_authtoken]
+auth_type = password
+auth_url = http://{{ openstack_vip_address }}:{{keystone_port}}/v3
+project_domain_name = Default
+user_domain_name = Default
+project_name = service
+username = gnocchi
+password = {{ gnocchi_user_password }}
+interface = internalURL
+region_name = RegionOne
+auth_host = http://{{ openstack_vip_address }}:{{keystone_port}}/v3/
+auth_protocol = http
+admin_user = admin
+admin_password = {{ keystone_admin_password }}
+admin_tenant_name = admin
+
+[storage]
+file_basepath = /var/lib/gnocchi
+driver = file

@@ -1,0 +1,34 @@
+- name: Install gnocchi
+  yum:
+    name: "{{ item }}"
+  with_items:
+    - openstack-gnocchi-api 
+    - openstack-gnocchi-metricd 
+    - python2-gnocchiclient
+
+- name: Copy glance.conf
+  include: config.yml
+
+- name: Prerequisites Database
+  include: mysql.yml
+
+- name: Restart the Alarm service
+  systemd:
+    name: "{{ item }}"
+    enabled: yes
+    state: started
+  with_items:
+    - openstack-gnocchi-metricd
+
+- name: Selinux and 8041 port
+  seport:
+    ports: 8041
+    proto: tcp
+    setype: http_port_t
+    state: present
+   
+- name: firewall Setting
+  firewalld:
+    port: 8041/tcp
+    permanent: true
+    state: enabled

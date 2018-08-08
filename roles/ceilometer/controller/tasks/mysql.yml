@@ -1,0 +1,7 @@
+- name: Create glance dependency
+  include: setting.yml
+
+- name: Create Ceilometer resources in Gnocchi
+  shell: ceilometer-upgrade
+  args:
+    executable: /bin/sh
