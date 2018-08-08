@@ -2,3 +2,8 @@
   template:
     src: ceilometer.conf.j2
     dest: /etc/ceilometer/ceilometer.conf
+
+- name: Copy polling.yml to /etc/ceilometer/
+  template:
+    src: polling.yml.j2
+    dest: /etc/ceilometer/polling.yml

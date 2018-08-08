@@ -1,5 +1,5 @@
 - name: Enable the Gnocchi for OpenStack repository Queens
-  command: add-apt-repository ud-archive:queens-proposed
+  command: add-apt-repository cloud-archive:queens-proposed
 
 - name: Upgrade the packages
   apt:

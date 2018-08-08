@@ -23,6 +23,11 @@
     src: dhcp_agent.ini.j2
     dest: /etc/neutron/dhcp_agent.ini
 
+- name: Copy metadata_agent.ini to /etc/neutron/
+  template:
+    src: metadata_agent.ini.j2
+    dest: /etc/neutron/metadata_agent.ini
+
 - name: Copy neutron_lbaas.conf to /etc/neutron/
   template:
     src: neutron_lbaas.conf.j2

@@ -17,23 +17,23 @@
 #    - { role: cinder/controller }
 #    - { role: heat }
 #    - { role: aodh }
-#    - { role: gnocchi }
+    - { role: gnocchi }
     - { role: ceilometer/controller }
 
 - hosts: compute
   become: yes
   roles:
-#    - { role: common/hostname }
-#    - { role: chrony }
-#    - { role: package }
-#    - { role: nova/compute}
-#    - { role: neutron/compute }
+    - { role: common/hostname }
+    - { role: chrony }
+    - { role: package }
+    - { role: nova/compute}
+    - { role: neutron/compute }
     - { role: ceilometer/compute }
 
 - hosts: storage
   become: yes
   roles:
-#    - { role: common/hostname }
-#    - { role: chrony }
-#    - { role: package }
-#    - { role: cinder/storage }
+    - { role: common/hostname }
+    - { role: chrony }
+    - { role: package }
+    - { role: cinder/storage }

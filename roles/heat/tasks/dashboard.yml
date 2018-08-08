@@ -1,0 +1,8 @@
+- name: Install heat dashboard
+  pip:
+    name: heat-dashboard
+
+- name: Copy heat-dashboard enable file to /usr/share/openstack-dashboard/openstack_dashboard/local/enabled
+  src: "{{ item }}"
+  dest: /usr/share/openstack-dashboard/openstack_dashboard/local/enabled 
+  with_fileglob: /usr/local/lib/python2.7/dist-packages/heat_dashboard/enabled/_[1-9]*.py

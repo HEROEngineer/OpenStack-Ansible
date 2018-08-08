@@ -3,7 +3,7 @@ transport_url = rabbit://{{ rabbitmq_user }}:{{ rabbitmq_password }}@{{ openstac
 
 [dispatcher_gnocchi]
 filter_service_activity = False
-archive_policy = medium
+archive_policy = high
 
 [service_credentials]
 auth_url = http://{{ openstack_vip_address }}:{{keystone_port}}/v3
