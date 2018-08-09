@@ -6,4 +6,4 @@
 - name: Copy polling.yml to /etc/ceilometer/
   template:
     src: polling.yml.j2
-    dest: /etc/ceilometer/polling.yml
+    dest: /etc/ceilometer/polling.yaml
