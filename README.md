@@ -30,11 +30,6 @@ apt update -y
 apt install python-pip -y
 </code></pre>
 
-Upgrade pip
-<pre><code>
-pip install -U pip
-</code></pre>
-
 Install and upgrade ansible
 <pre><code>
 apt install ansible -y
