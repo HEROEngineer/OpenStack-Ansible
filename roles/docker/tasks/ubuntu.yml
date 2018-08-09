@@ -1,0 +1,26 @@
+- name: Install packages
+  apt:
+    name: "{{ item }}"
+  with_items:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - software-properties-common
+    - python-pip
+
+- name: Add Docker’s official GPG key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Add repository 
+  command: add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable"
+
+- name: Install docker
+  apt:
+    name: docker-ce
+    update_cache: yes
+
+- name: pip install docker-py
+  pip:
+    name: docker-py

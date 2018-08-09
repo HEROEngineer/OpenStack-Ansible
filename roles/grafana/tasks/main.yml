@@ -1,0 +1,38 @@
+#- name: Create grafana dir
+#  file:
+#    path: /var/lib/grafana
+#    state: directory
+#    mode: 0755
+
+#- name: Run grafana container
+#  docker_container:
+#    name: grafana
+#    image: grafana/grafana:4.2.0
+#    state: present
+    #devices:
+    #  - "/var/lib/grafana:/var/lib/grafana"
+   # ports:
+   #  - "3000:{{ grafana_port }}"
+    #env:
+    #  GF_SERVER_ROOT_URL: "http://{{ openstack_vip_address }}"
+    #  GF_SECURITY_ADMIN_PASSWORD: "{{ grafana_admin_password }}"
+    #  GF_INSTALL_PLUGINS: "gnocchixyz-gnocchi-datasource"
+- name: add gnocchi datasource
+  grafana_datasource:
+    name: "OpenStack"
+    grafana_url: "http://{{ openstack_vip_address }}:{{ grafana_port }}"
+    grafana_user: "admin"
+    grafana_password: "{{ grafana_admin_password }}"
+    org_id: "1"
+    ds_type: "Gnocchi"
+    url: "http://{{ openstack_vip_address }}:{{ keystone_port}}"
+    access: direct
+    
+- name: Import OpenStack metric dashboard
+  grafana_dashboard:
+    grafana_url: "http://{{ openstack_vip_address }}:{{ grafana_port }}"
+    grafana_user: "admin"
+    grafana_password: "{{ grafana_admin_password }}"
+    state: present
+    overwrite: yes
+    path: /path/to/dashboards/foo.json   

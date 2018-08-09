@@ -1,0 +1,5 @@
+- name: install docker 
+  include: ubuntu.yml
+
+- name: Add user docker group
+  command: usermod -aG docker "{{ ansible_ssh_user }}"

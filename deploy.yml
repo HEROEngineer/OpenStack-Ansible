@@ -2,23 +2,25 @@
 - hosts: controller
   become: yes
   roles:
-#    - { role: common/hostname }
-#    - { role: chrony }
-#    - { role: package }
-#    - { role: mariadb}
-#    - { role: rabbitmq}
-#    - { role: memcached}
-#    - { role: etcd}
-#    - { role: keystone}
-#    - { role: glance}
-#    - { role: nova/controller}
-#    - { role: neutron/controller }
-#    - { role: horizon }
-#    - { role: cinder/controller }
-#    - { role: heat }
-#    - { role: aodh }
+    - { role: common/hostname }
+    - { role: chrony }
+    - { role: package }
+    - { role: mariadb}
+    - { role: rabbitmq}
+    - { role: memcached}
+    - { role: etcd}
+    - { role: keystone}
+    - { role: glance}
+    - { role: nova/controller}
+    - { role: neutron/controller }
+    - { role: horizon }
+    - { role: cinder/controller }
+    - { role: heat }
+    - { role: aodh }
     - { role: gnocchi }
     - { role: ceilometer/controller }
+    - { role: docker }
+#    - { role: grafana }
 
 - hosts: compute
   become: yes
