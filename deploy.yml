@@ -20,7 +20,7 @@
     - { role: gnocchi }
     - { role: ceilometer/controller }
     - { role: docker }
-#    - { role: grafana }
+    - { role: grafana }
 
 - hosts: compute
   become: yes
