@@ -49,6 +49,8 @@ cd openstack-ansible
 Add the machine info gathered above into a file called inventory. For inventory example:
 >[all] section define openstack node hostname and ip, ansible will auto change openstack node hostname
 
+> [env:children] section don't modify, controller mean [controller], not your controller hostname
+
 <pre><code>
 [all]
 controller    ansible_host=10.50.2.6
