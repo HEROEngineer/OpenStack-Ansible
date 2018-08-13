@@ -3,3 +3,8 @@
 
 - name: Add user docker group
   command: usermod -aG docker "{{ ansible_ssh_user }}"
+
+- name: Install docker-py
+  pip:
+    name: docker-py
+    version: 1.10.6
