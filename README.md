@@ -149,3 +149,13 @@ Run deploy.yml to install OpenStack
 <pre><code>
 ansible-playbook -i inventory deploy.yml
 </code></pre>
+
+Login in horizon:
+<pre><code>
+http://openstack_vip_address/hroizon
+</code></pre>
+
+Login in grafana:
+<pre><code>
+http://openstack_vip_address:grafana_port
+</code></pre>
