@@ -14,6 +14,7 @@
     path: /var/lib/gnocchi
     owner: gnocchi
     group: gnocchi
+    recurse: yes
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
 - name: Copy 10-gnocchi_wsgi.conf to /etc/httpd/conf.d/
