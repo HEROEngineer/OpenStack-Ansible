@@ -1,5 +1,5 @@
 [mysqld]
-bind-address = {{ openstack_vip_address }}
+bind-address = {{ ansible_host }}
 
 default-storage-engine = innodb
 innodb_file_per_table = on
