@@ -32,7 +32,7 @@ apt install python-pip -y
 
 Install and upgrade ansible
 <pre><code>
-apt install ansible -y
+pip install ansible
 pip install -U ansible
 </pre></code>
 
