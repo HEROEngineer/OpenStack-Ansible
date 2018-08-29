@@ -39,8 +39,9 @@ external_ntp_servers: "tock.stdtime.gov.tw"
 ########################
 # Glance options
 ########################
-enable_glance_nfs: "true"
-nfs_server: "10.50.0.12"
+enable_glance_nfs: "yes"
+nfs_src_path: "/home/localadmin/images"
+nfs_server_ip: "10.50.2.12"
 
 ################
 # Cinder options
