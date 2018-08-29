@@ -1,0 +1,34 @@
+- name: Install nova
+  yum:
+    name: "{{ items }}"
+  with_items:
+    - openstack-nova-api 
+    - openstack-nova-conductor
+    - openstack-nova-console
+    - openstack-nova-novncproxy 
+    - openstack-nova-scheduler
+    - openstack-nova-placement-api
+
+- name: Copy nova.conf
+  include: config.yml
+
+- name: Prerequisites Database
+  include: mysql.yml
+
+- name: Copy 00-nova-placement-api.conf to /etc/httpd/conf.d/
+  template:
+    src: 00-nova-placement-api.conf.j2
+    dest: /etc/httpd/conf.d/00-nova-placement-api.conf
+
+- name: Restart the Nova service
+  systemd:
+    name: "{{ item }}"
+    enabled: yes
+    state: started
+  with_items:
+    - openstack-nova-api.service 
+    - openstack-nova-conductor.service
+    - openstack-nova-console
+    - openstack-nova-novncproxy.service
+    - openstack-nova-scheduler.service
+    - httpd

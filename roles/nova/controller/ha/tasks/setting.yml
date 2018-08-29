@@ -1,0 +1,30 @@
+- name: Create nova user
+  command: openstack {{ keystone_auth }} user create --domain default --password {{ nova_user_password }} nova
+
+- name: Create admin role to the nova user and service project
+  command: openstack {{ keystone_auth }} role add --project service --user nova admin
+
+- name: Create nova service
+  command: openstack {{ keystone_auth }} service create --name nova --description "OpenStack Compute" compute
+
+- name: Create nova API endpoint
+  command: openstack {{ keystone_auth }} endpoint create --region RegionOne compute "{{ item }}" http://{{ openstack_vip_address }}:8774/v2.1
+  with_items:
+    - public
+    - internal
+    - admin
+
+- name: Create plancement user
+  command: openstack {{ keystone_auth }} user create --domain default --password {{ nova_user_password }} placement
+- name: Create admin role to the plancement user and service project
+  command: openstack {{ keystone_auth }} role add --project service --user placement admin
+
+- name: Create plancement service
+  command: openstack {{ keystone_auth }} service create --name placement --description "Placement API" placement
+
+- name: Create plancement API endpoint
+  command: openstack {{ keystone_auth }} endpoint create --region RegionOne placement "{{ item }}" http://{{ openstack_vip_address }}:8778
+  with_items:
+    - public
+    - internal
+    - admin
