@@ -5,6 +5,11 @@
 {%- endfor -%}
 
 transport_url = rabbit://{{ rabbitmq_cluster|join(',') }}
+bind_host = {{ inventory_hostname }}
+enable_v2_api = True
+enable_v2_registry = True 
+enable_v1_api = False
+enable_v1_registry = False
 
 [database]
 connection = mysql+pymysql://glance:{{ glance_db_password }}@{{ openstack_vip_address }}/glance
@@ -18,7 +23,7 @@ filesystem_store_datadir = /var/lib/glance/images/
 disk_formats = ami,ari,aki,vhd,vhdx,vmdk,raw,qcow2,vdi,iso,ploop.root-tar
 
 [keystone_authtoken]
-auth_uri = http://{{ openstack_vip_address }}:{{ keystone_port }}
+www_authenticate_uri = http://{{ openstack_vip_address }}:{{ keystone_port }}
 auth_url = http://{{ openstack_vip_address }}:{{ keystone_port }}
 {% set memcached_cluster = [] %}
 {%- for host in groups.controller -%}

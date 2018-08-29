@@ -5,6 +5,7 @@
 {%- endfor -%}
 
 transport_url = rabbit://{{ rabbitmq_cluster|join(',') }}
+bind_host = {{ inventory_hostname }}
 
 [database]
 connection = mysql+pymysql://glance:{{ glance_db_password }}@{{ openstack_vip_address }}/glance
