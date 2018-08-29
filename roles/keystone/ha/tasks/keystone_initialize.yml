@@ -8,6 +8,7 @@
   with_items:
     - keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
     - keystone-manage credential_setup --keystone-user keystone --keystone-group keystone
+  when: inventory_hostname == groups['controller'][0]
 
 - name: Bootstrap the Identity service
   shell: | 
