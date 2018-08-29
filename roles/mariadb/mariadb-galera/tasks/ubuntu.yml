@@ -1,0 +1,27 @@
+- name: Enable apt repository
+  apt:
+    name: "{{ item }}"
+  with_items:
+    - python-software-properties
+    - software-properties-common
+
+- name: Add the GnuPG key for the MariaDB repository
+  apt_key: 
+    keyserver: hkp://keyserver.ubuntu.com:80
+    id: F1656F24C74CD1D8
+
+- name: Add the MariaDB repository to your sources list
+  apt_repository:
+    repo: deb [arch=amd64,arm64,i386,ppc64el] http://mirror.jaleco.com/mariadb/repo/10.1/ubuntu xenial main
+
+- name: Install mariadb-galera-server
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+  with_items:
+    - mariadb-server
+    - python-pymysql
+    - python-mysqldb
+
+- name : Configure mariadb
+  include: config.yml

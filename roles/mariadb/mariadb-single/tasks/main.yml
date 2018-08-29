@@ -1,10 +1,10 @@
-- name: Ubuntu Install Keystone
+- name: Ubuntu mariadb setting
   include: ubuntu.yml
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
-- name: Centos Install Keystone
+- name: Centos mariadb setting
   include: centos.yml
   when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
-- name: Create service project
-  include: setting.yml
+- name: Mysql Secure Installation
+  include: mysql_secure_installation.yml

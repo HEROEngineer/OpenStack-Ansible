@@ -1,6 +1,11 @@
 [DEFAULT]
 core_plugin = ml2
-transport_url = rabbit://{{ rabbitmq_user }}:{{ rabbitmq_password }}@{{ openstack_vip_address }}
+{% set rabbitmq_cluster = [] %}
+{%- for host in groups.controller -%}
+{{ rabbitmq_cluster.append( rabbitmq_user+":"+rabbitmq_password+"@"+host ) }}
+{%- endfor -%}
+
+transport_url = rabbit://{{ rabbitmq_cluster|join(',') }}
 auth_strategy = keystone
 
 [agent]
@@ -13,7 +18,11 @@ lock_path = /var/lib/neutron/tmp
 
 [keystone_authtoken]
 auth_url = http://{{ openstack_vip_address }}:{{keystone_port}}
-memcached_servers = {{ openstack_vip_address }}:11211
+{% set memcached_cluster = [] %}
+{%- for host in groups.controller -%}
+{{ memcached_cluster.append( host+":"+'11211' ) }}
+{%- endfor -%}
+memcached_servers = {{ memcached_cluster|join(',') }}
 auth_type = password
 project_domain_name = Default
 user_domain_name = Default

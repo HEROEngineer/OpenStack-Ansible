@@ -1,0 +1,21 @@
+- name: Stop mysql service
+  service:
+    name: mysql
+    state: stopped
+
+- name: Start galera new cluster
+  command: galera_new_cluster
+  when: inventory_hostname == groups['controller'][0]
+
+- name: Start Primary mysql service
+  service:
+    name: mysql
+    state: started
+  when: inventory_hostname == groups['controller'][0]
+
+- name: Start another mysql service
+  service:
+    name: mysql
+    state: started
+  when: inventory_hostname != groups['controller'][0]
+

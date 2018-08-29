@@ -1,0 +1,15 @@
+- name: Install mariadb-server
+  apt:
+    name: "{{ item }}"
+  with_items:
+    - mariadb-server
+    - python-pymysql
+    - python-mysqldb
+
+- name : Configure mariadb
+  include: config.yml
+
+- name: Restart mysql service
+  service:
+    name: mysql
+    state: restarted

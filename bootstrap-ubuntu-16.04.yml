@@ -2,7 +2,7 @@
   gather_facts: False
   become: true
   tasks:
-  - name: install python 2.7
+  - name: Install python 2.7
     raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
     register: output
     changed_when: output.stdout != ""

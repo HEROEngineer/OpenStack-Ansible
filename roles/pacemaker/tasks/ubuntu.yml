@@ -1,0 +1,22 @@
+- name: Install pacemaker, crmsh, corosync, fence-agents, resource-agents and libqb0
+  apt:
+    name: "{{ item }}"
+  with_items:
+    - pacemaker
+    - crmsh
+    - corosync
+    - fence-agents
+    - resource-agents
+    - libqb0
+
+- name: Configure corosync
+  include: config.yml
+
+- name: Restart corosync and pacemaker
+  service:
+    name: "{{ item }}"
+    state: restarted
+  with_items:
+    - corosync
+    - pacemaker
+

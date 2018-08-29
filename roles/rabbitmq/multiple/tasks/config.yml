@@ -1,0 +1,32 @@
+- name: Copy new rabbitmq erlang.cookie to /var/lib/rabbitmq/
+  template:
+    src: erlang.cookie.j2
+    dest: /var/lib/rabbitmq/.erlang.cookie
+    owner: rabbitmq
+    group: rabbitmq
+    mode: 0400
+
+- name: Restart rabbitmq-server
+  service:
+    name: rabbitmq-server
+    state: restarted
+
+- name: Stop another node rabbitmq app
+  command: rabbitmqctl stop_app
+  when: inventory_hostname != groups['controller'][0]
+
+- name: Another node join cluster
+  command: rabbitmqctl join_cluster rabbit@{{ groups['controller'][0] }}
+  when: inventory_hostname != groups['controller'][0]
+
+- name: Start another node rabbitmq app
+  command: rabbitmqctl start_app
+  when: inventory_hostname != groups['controller'][0]
+
+- name: Set ha-mode to exactly to all
+  rabbitmq_policy:
+    name: HA
+    pattern: ^(?!amq\.).*
+    tags:
+      ha-mode: all
+  when: inventory_hostname == groups['controller'][0]

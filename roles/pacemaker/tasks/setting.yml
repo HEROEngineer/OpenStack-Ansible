@@ -1,0 +1,8 @@
+- name: Set basic cluster properties
+  command: "crm configure property {{ crm_configure }}"
+  when: inventory_hostname == groups['controller'][0]
+
+- name: Configure STONITH to {{ stonith_enabled_parameter }}
+  command: "crm configure property {{ stonith_enabled }}"
+  when: inventory_hostname == groups['controller'][0]
+

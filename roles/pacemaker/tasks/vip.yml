@@ -1,0 +1,13 @@
+- name: Set Virtual IP address {{ openstack_vip_address }}
+  command: crm configure primitive vip {{ crm_vip }}
+  when: inventory_hostname == groups['controller'][0]
+
+- name: Add HAProxy to the cluster
+  command: "{{ item }}"
+  with_items:
+    - crm cib new conf-haproxy
+    - crm configure primitive haproxy lsb:haproxy op monitor interval="1s"
+    - crm configure clone haproxy-clone haproxy
+    - crm configure colocation {{ colocation }}
+    - crm configure order {{ order }}
+  when: inventory_hostname == groups['controller'][0]

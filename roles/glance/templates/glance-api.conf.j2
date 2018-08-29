@@ -1,4 +1,10 @@
 [DEFAULT]
+{% set rabbitmq_cluster = [] %}
+{%- for host in groups.controller -%}
+{{ rabbitmq_cluster.append( rabbitmq_user+":"+rabbitmq_password+"@"+host ) }}
+{%- endfor -%}
+
+transport_url = rabbit://{{ rabbitmq_cluster|join(',') }}
 
 [database]
 connection = mysql+pymysql://glance:{{ glance_db_password }}@{{ openstack_vip_address }}/glance
@@ -14,7 +20,11 @@ disk_formats = ami,ari,aki,vhd,vhdx,vmdk,raw,qcow2,vdi,iso,ploop.root-tar
 [keystone_authtoken]
 auth_uri = http://{{ openstack_vip_address }}:{{ keystone_port }}
 auth_url = http://{{ openstack_vip_address }}:{{ keystone_port }}
-memcached_servers = {{ openstack_vip_address }}:11211
+{% set memcached_cluster = [] %}
+{%- for host in groups.controller -%}
+{{ memcached_cluster.append( host+":"+'11211' ) }}
+{%- endfor -%}
+memcached_servers = {{ memcached_cluster|join(',') }}
 auth_type = password
 project_domain_name = Default
 user_domain_name = Default
@@ -28,3 +38,8 @@ driver = messagingv2
 [paste_deploy]
 flavor = keystone
 
+[oslo_messaging_rabbit]
+amqp_durable_queues = true
+rabbit_retry_interval = 1
+rabbit_retry_backoff = 2
+rabbit_ha_queues = true

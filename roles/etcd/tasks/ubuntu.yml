@@ -1,6 +1,13 @@
-- name: Install etcd
-  apt:
+- name: Create etcd group
+  group:
     name: etcd
+    state: present
+
+- name: Create etcd user
+  user:
+    name: etcd
+    group: etcd
+    
 - name: Create etcd directory
   file:
     path: "{{ item }}"
@@ -9,13 +16,34 @@
     group: etcd
     mode: 0755
   with_items:
-    - /etc/etcd/
-    - /var/lib/etcd
+    - /opt/etcd/
+    - /var/lib/etcd/
 
-- name: Copy etcd.conf.yml to /etc/ctcd/
+- name: Download etcd package
+  get_url:
+    url: "{{ etcd_download_url }}"
+    dest: "/opt/etcd/{{ etcd_version }}-linux-amd64.tar.gz"
+
+- name: Extract {{ etcd_version }}-linux-amd64.tar.gz
+  unarchive:
+    src: "/opt/etcd/{{ etcd_version }}-linux-amd64.tar.gz"
+    dest: /opt/etcd/
+    remote_src: yes
+
+- name: Copy etcd etcdctl to /usr/bin/
+  copy:
+    src: "/opt/etcd/etcd-{{ etcd_version }}-linux-amd64/{{ item }}"
+    dest: /usr/bin/
+    mode: a+x
+    remote_src: yes
+  with_items:
+    - etcd
+    - etcdctl
+
+- name: Copy ubuntu-etcd to /etc/default/etcd
   template:
-    src: ubuntu-etcd.conf.yml.j2
-    dest: /etc/etcd/etcd.conf.yml
+    src: ubuntu-etcd.j2
+    dest: /etc/default/etcd 
 
 - name: Copy etcd.service to /lib/systemd/system/
   template:
@@ -25,7 +53,6 @@
 - name: Start etcd service
   systemd:
     name: etcd
+    daemon_reload: yes
     enabled: yes
-    state: started
-
-
+    state: restarted

@@ -1,0 +1,26 @@
+- name: Open Galera Cluster port
+  iptables:
+    chain: INPUT
+    in_interface: "{{ network_manage_interface }}"
+    protocol: tcp
+    match: tcp
+    source: "{{ ansible_host }}" 
+    jump: ACCEPT
+    destination_port: "{{ item }}"
+    state: present
+  with_items:
+    - 3306
+    - 4567
+    - 4568
+    - 4444
+
+- name: Save iptables
+  shell: iptables-save |  tee /etc/iptables.conf
+
+- name: Enable iptables rules when boot
+  lineinfile:
+    dest: /etc/rc.local
+    insertbefore: '^exit 0'
+    line: "iptables-restore < /etc/iptables.conf"
+    state: present
+

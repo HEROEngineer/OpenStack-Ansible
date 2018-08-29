@@ -1,0 +1,17 @@
+- name: Install python-pymysql
+  yum:
+    name: "{{ item }}"
+  with_items:
+    - mariadb
+    - mariadb-server
+    - python2-PyMySQL
+
+- name : Configure mariadb
+  include: config.yml
+
+- name: Restart mysql service
+  systemd:
+    name: mariadb.service
+    enabled: yes
+    state: started
+

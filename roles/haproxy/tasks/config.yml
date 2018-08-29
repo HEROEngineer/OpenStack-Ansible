@@ -1,0 +1,35 @@
+- name: haproxy.cfg to /etc/haproxy/haproxy.cfg
+  template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+
+- name: Configure the kernel parameter to allow non-local IP binding
+  lineinfile:
+    dest: /etc/sysctl.conf
+    line: "net.ipv4.ip_nonlocal_bind = 1"
+    state: present
+
+- name: Restart the host
+  command: sysctl -p
+
+- name: Copy clustercheck to /etc/default/clustercheck
+  template:
+    src: clustercheck.j2
+    dest: /etc/default/clustercheck
+
+- name: Copy clustercheck-shell to /usr/bin/clustercheck
+  template:
+    src: clustercheck-shell.j2
+    dest: /usr/bin/clustercheck
+    mode: a+x
+
+- name: Add the clustercheck service to /etc/services
+  lineinfile:
+    dest: /etc/services
+    line: "galera-monitor  9200/tcp    # MySQL check"
+    state: present
+
+- name: Copy galera-monitor to /etc/xinetd.d/galera-monitor
+  template:
+    src: galera-monitor.j2
+    dest: /etc/xinetd.d/galera-monitor

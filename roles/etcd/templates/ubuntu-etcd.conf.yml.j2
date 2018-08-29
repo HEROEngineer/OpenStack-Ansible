@@ -1,9 +1,0 @@
-name: controller
-data-dir: /var/lib/etcd
-initial-cluster-state: 'new'
-initial-cluster-token: 'etcd-cluster-01'
-initial-cluster: {{ etcd_initial_cluster }}
-initial-advertise-peer-urls: {{ etcd_initial_advertise_peer_urls }}
-advertise-client-urls: {{ etcd_advertise_client_urls }}
-listen-peer-urls: {{ etcd_listen_peer_urls }}
-listen-client-urls: {{ etcd_listen_client_urls }}

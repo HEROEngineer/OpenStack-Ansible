@@ -6,7 +6,12 @@ state_path = /var/lib/nova
 my_ip = {{ ansible_default_ipv4.address }}
 use_neutron = true
 firewall_driver = nova.virt.firewall.NoopFirewallDriver
-transport_url = rabbit://{{ rabbitmq_user }}:{{ rabbitmq_password }}@{{ openstack_vip_address }}
+{% set rabbitmq_cluster = [] %}
+{%- for host in groups.controller -%}
+{{ rabbitmq_cluster.append( rabbitmq_user+":"+rabbitmq_password+"@"+host ) }}
+{%- endfor -%}
+
+transport_url = rabbit://{{ rabbitmq_cluster|join(',') }}
 
 [api]
 auth_strategy = keystone
@@ -31,7 +36,11 @@ lock_path = /var/lib/nova/tmp
 
 [keystone_authtoken]
 auth_url = http://{{ openstack_vip_address }}:{{keystone_port}}/v3
-memcached_servers = {{ openstack_vip_address }}:11211
+{% set memcached_cluster = [] %}
+{%- for host in groups.controller -%}
+{{ memcached_cluster.append( host+":"+'11211' ) }}
+{%- endfor -%}
+memcached_servers = {{ memcached_cluster|join(',') }}
 auth_type = password
 project_domain_name = Default
 user_domain_name = Default
@@ -67,3 +76,9 @@ server_proxyclient_address = $my_ip
 
 [scheduler]
 discover_hosts_in_cells_interval = 300
+
+[oslo_messaging_rabbit]
+amqp_durable_queues = true
+rabbit_retry_interval = 1
+rabbit_retry_backoff = 2
+rabbit_ha_queues = true

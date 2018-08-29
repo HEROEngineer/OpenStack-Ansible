@@ -1,0 +1,8 @@
+- name: Install ubuntu pacemaker
+  include: ubuntu.yml
+
+- name: Setting pacemaker
+  include: setting.yml
+
+- name: Configure VIP
+  include: vip.yml

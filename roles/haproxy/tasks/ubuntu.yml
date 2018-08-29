@@ -1,0 +1,20 @@
+- name: Install HAProxy and xinetd
+  apt:
+    name: "{{ item }}"
+  with_items:
+    - haproxy
+    - xinetd
+
+- name: Copy haproxy.cfg
+  include: config.yml
+
+- name: Restart HAProxy service
+  service:
+    name: haproxy
+    state: restarted
+
+- name: Restart xinetd  service
+  service:
+    enabled: yes
+    name: xinetd 
+    state: started

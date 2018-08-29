@@ -1,0 +1,22 @@
+[mysqld]
+datadir=/var/lib/mysql
+socket=/var/run/mysqld/mysqld.sock
+user=mysql
+binlog_format=ROW
+bind-address={{ ansible_host }}
+
+# InnoDB Configuration
+default_storage_engine=innodb
+innodb_autoinc_lock_mode=2
+innodb_flush_log_at_trx_commit=0
+innodb_buffer_pool_size=122M
+
+# Galera Cluster Configuration
+wsrep_provider=/usr/lib/libgalera_smm.so
+wsrep_provider_options="pc.recovery=TRUE;gcache.size=300M"
+wsrep_cluster_name="openstack"
+wsrep_cluster_address="gcomm://{{ groups['controller'] | map('extract', hostvars, ['ansible_host']) | join(',') }}"
+wsrep_sst_method=rsync
+
+wsrep_node_name="{{ inventory_hostname }}"
+wsrep_node_address="{{ ansible_host }}"

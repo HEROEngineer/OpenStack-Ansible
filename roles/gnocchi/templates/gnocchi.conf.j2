@@ -1,6 +1,11 @@
 [DEFAULT]
-transport_url = rabbit://{{ rabbitmq_user }}:{{ rabbitmq_password }}@{{ openstack_vip_address }}
 coordination_url = file:///var/lib/gnocchi/locks
+{% set rabbitmq_cluster = [] %}
+{%- for host in groups.controller -%}
+{{ rabbitmq_cluster.append( rabbitmq_user+":"+rabbitmq_password+"@"+host ) }}
+{%- endfor -%}
+
+transport_url = rabbit://{{ rabbitmq_cluster|join(',') }}
 
 [api]
 middlewares = oslo_middleware.cors.CORS

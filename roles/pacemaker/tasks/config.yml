@@ -1,0 +1,30 @@
+- name: Copy corosync.conf to /etc/corosync/corosync.conf
+  template:
+    src: corosync.conf.j2
+    dest: /etc/corosync/corosync.conf
+
+- name: Enable start corosync at boot
+  lineinfile:
+    dest: /etc/default/corosync
+    line: "START=yes"
+    state: present
+
+- name: Generates corosync key
+  command: corosync-keygen
+  args:
+    creates: /etc/corosync/authkey
+  when: inventory_hostname == groups['controller'][0]
+
+
+- name: Fetching /etc/corosync/authkey to /tmp
+  fetch:
+    src: /etc/corosync/authkey
+    dest: ./authkey
+    flat: yes
+  run_once: true
+
+- name: Copy authkey to other nodes
+  copy: 
+    src: ./authkey 
+    dest: /etc/corosync/authkey
+  when: inventory_hostname != groups['controller'][0]

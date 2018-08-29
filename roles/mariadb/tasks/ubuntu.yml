@@ -1,9 +1,0 @@
-- name: Copy 99-openstack.cnf to /etc/mysql/mariadb.conf.d/
-  template:
-    src: 99-openstack.cnf.j2
-    dest: /etc/mysql/mariadb.conf.d/99-openstack.cnf
-
-- name: Restart mysql service
-  service:
-    name: mysql
-    state: restarted

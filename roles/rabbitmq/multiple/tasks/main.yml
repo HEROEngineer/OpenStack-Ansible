@@ -1,0 +1,21 @@
+- name: Ubuntu Install rabbitmq-server
+  include: ubuntu.yml
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: Centos Install rabbitmq-server
+  include: centos.yml
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: Configure rabbitmq ha
+  include: config.yml
+
+- name: Add {{ rabbitmq_user }} user and permit configuration
+  rabbitmq_user: 
+    user: "{{ rabbitmq_user }}" 
+    password: "{{ rabbitmq_password }}"
+    permissions:
+      - vhost: /
+        configure_priv: .*
+        read_priv: .*
+        write_priv: .*
+  when: inventory_hostname == groups['controller'][0]

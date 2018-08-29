@@ -5,13 +5,13 @@
     - { role: common/hostname }
     - { role: chrony }
     - { role: package }
-    - { role: mariadb}
-    - { role: rabbitmq}
-    - { role: memcached}
-    - { role: etcd}
-    - { role: keystone}
-    - { role: glance}
-    - { role: nova/controller}
+    - { role: mariadb/mariadb-single }
+    - { role: rabbitmq/single }
+    - { role: memcached }
+    - { role: etcd }
+    - { role: keystone/single }
+    - { role: glance/single }
+    - { role: nova/controller }
     - { role: neutron/controller }
     - { role: horizon }
     - { role: cinder/controller }

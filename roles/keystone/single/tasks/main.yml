@@ -1,0 +1,10 @@
+- name: Ubuntu Install Keystone
+  include: ubuntu.yml
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Centos Install Keystone
+  include: centos.yml
+  when: ansible_distribution == 'CentOS'
+
+- name: Create service project
+  include: setting.yml

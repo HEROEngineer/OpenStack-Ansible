@@ -1,13 +1,34 @@
 [Unit]
-After=network.target
 Description=etcd - highly-available key value store
+Documentation=https://github.com/coreos/etcd
+Documentation=man:etcd
+After=network.target
+Wants=network-online.target
 
 [Service]
-LimitNOFILE=65536
-Restart=on-failure
+Environment=DAEMON_ARGS=
+Environment=ETCD_NAME=%H
+#Environment=ETCD_DATA_DIR=/var/lib/etcd/default
+EnvironmentFile=-/etc/default/etcd
 Type=notify
-ExecStart=/usr/bin/etcd --config-file /etc/etcd/etcd.conf.yml
 User=etcd
+PermissionsStartOnly=true
+#ExecStart=/bin/sh -c "GOMAXPROCS=$(nproc) /usr/bin/etcd $DAEMON_ARGS"
+#ExecStart=/usr/bin/etcd $DAEMON_ARGS
+ExecStart=/bin/bash -c "GOMAXPROCS=$(nproc) /usr/bin/etcd \
+--name=\"${ETCD_NAME}\" \
+--data-dir=\"${ETCD_DATA_DIR}\" \
+--listen-peer-urls=\"${ETCD_LISTEN_PEER_URLS}\" \
+--advertise-client-urls=\"${ETCD_ADVERTISE_CLIENT_URLS}\" \
+--initial-cluster-token=\"${ETCD_INITIAL_CLUSTER_TOKEN}\" \
+--initial-cluster=\"${ETCD_INITIAL_CLUSTER}\"  \
+--initial-cluster-state=\"${ETCD_INITIAL_CLUSTER_STATE}\" \
+--initial-advertise-peer-urls=\"${ETCD_INITIAL_ADVERTISE_PEER_URLS}\" \
+--listen-client-urls=\"${ETCD_LISTEN_CLIENT_URLS}\""
+Restart=on-failure
+RestartSec=10s
+LimitNOFILE=65536
 
 [Install]
 WantedBy=multi-user.target
+Alias=etcd2.service

@@ -1,0 +1,10 @@
+- name: Grant the clustercheck user PROCESS privileges
+  mysql_user:
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    name: clustercheck
+    password: "{{ clustercheck_password }}"
+    priv: "*.*:PROCESS"
+    host: "localhost"
+    state: present
+  when: inventory_hostname == groups['controller'][0]

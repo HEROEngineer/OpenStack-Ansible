@@ -1,7 +1,12 @@
 [DEFAULT]
 log_dir = /var/log/aodh
-transport_url = rabbit://{{ rabbitmq_user }}:{{ rabbitmq_password }}@{{ openstack_vip_address }}
 auth_strategy = keystone
+{% set rabbitmq_cluster = [] %}
+{%- for host in groups.controller -%}
+{{ rabbitmq_cluster.append( rabbitmq_user+":"+rabbitmq_password+"@"+host ) }}
+{%- endfor -%}
+
+transport_url = rabbit://{{ rabbitmq_cluster|join(',') }}
 
 [database]
 backend = sqlalchemy
@@ -10,7 +15,11 @@ connection = mysql+pymysql://aodh:{{ aodh_db_password }}@{{ openstack_vip_addres
 [keystone_authtoken]
 auth_uri = http://{{ openstack_vip_address }}:{{keystone_port}}
 auth_url = http://{{ openstack_vip_address }}:{{keystone_port}}
-memcached_servers = {{ openstack_vip_address }}:11211
+{% set memcached_cluster = [] %}
+{%- for host in groups.controller -%}
+{{ memcached_cluster.append( host+":"+'11211' ) }}
+{%- endfor -%}
+memcached_servers = {{ memcached_cluster|join(',') }}
 auth_type = password
 project_domain_id = default
 user_domain_id = default
@@ -28,3 +37,9 @@ username = aodh
 password = {{ aodh_user_password }}
 interface = internalURL
 region_name = RegionOne
+
+[oslo_messaging_rabbit]
+amqp_durable_queues = true
+rabbit_retry_interval = 1
+rabbit_retry_backoff = 2
+rabbit_ha_queues = true

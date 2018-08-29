@@ -1,0 +1,33 @@
+[DEFAULT]
+log_dir = /var/log/keystone
+{% set rabbitmq_cluster = [] %}
+{%- for host in groups.controller -%}
+{{ rabbitmq_cluster.append( rabbitmq_user+":"+rabbitmq_password+"@"+host ) }}
+{%- endfor -%}
+
+transport_url = rabbit://{{ rabbitmq_cluster|join(',') }}
+
+[cors]
+allowed_origin = http://{{ openstack_vip_address }}:{{ grafana_port }}
+
+[credential]
+
+[database]
+connection = mysql+pymysql://keystone:{{ keystone_db_password }}@{{ openstack_vip_address }}/keystone
+
+[token]
+provider = fernet
+
+[cache]
+{% set memcached_cluster = [] %}
+{%- for host in groups.controller -%}
+{{ memcached_cluster.append( host+":"+'11211' ) }}
+{%- endfor -%}
+
+memcached_servers = {{ memcached_cluster|join(',') }}
+
+[oslo_messaging_rabbit]
+amqp_durable_queues = true
+rabbit_retry_interval = 1
+rabbit_retry_backoff = 2
+rabbit_ha_queues = true

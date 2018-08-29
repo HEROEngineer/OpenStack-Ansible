@@ -1,0 +1,15 @@
+{% macro initial_cluster() -%}
+{% for host in groups['controller'] -%}
+  {{ hostvars[host]['ansible_hostname'] }}=http://{{ hostvars[host].ansible_default_ipv4.address }}:{{ etcd_peer_port }}
+  {%- if not loop.last -%},{%- endif -%}
+{%- endfor -%}
+{% endmacro -%}
+ETCD_NAME="{{ inventory_hostname }}"
+ETCD_DATA_DIR="/var/lib/etcd/default"
+ETCD_INITIAL_CLUSTER_STATE="new"
+ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster-01"
+ETCD_INITIAL_ADVERTISE_PEER_URLS="{{ etcd_initial_advertise_peer_urls }}"
+ETCD_ADVERTISE_CLIENT_URLS="{{ etcd_advertise_client_urls }}"
+ETCD_LISTEN_PEER_URLS="{{ etcd_listen_peer_urls }}"
+ETCD_LISTEN_CLIENT_URLS="{{ etcd_listen_client_urls }}"
+ETCD_INITIAL_CLUSTER="{{ initial_cluster() }}"

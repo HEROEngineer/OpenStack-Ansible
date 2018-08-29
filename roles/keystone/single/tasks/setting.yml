@@ -1,0 +1,11 @@
+- name: Generate admin-openrc
+  template:
+    src: admin-openrc.j2
+    dest: /home/{{ ansible_user }}/admin-openrc
+    mode: 0755
+
+- name: Create Project
+  command: openstack {{ keystone_auth }} project create --domain default --description "Service Project" service
+
+- name: Create user role
+  command:  openstack {{ keystone_auth }} role create user

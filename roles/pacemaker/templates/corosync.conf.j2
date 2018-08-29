@@ -1,0 +1,61 @@
+totem {
+      version: 2
+      token: 10000
+      token_retransmits_before_loss_const: 10
+      vsftype: none
+      secauth: on
+      threads: 0
+      rrp_mode: active
+      interface {
+             ringnumber: 0
+             bindnetaddr: {{ ansible_default_ipv4.address }}
+             broadcast: yes
+             mcastport: 5405
+     }
+     transport: udpu
+}
+
+nodelist {
+{% for node in groups['controller']|sort %}
+       node {
+            ring0_addr: {{ hostvars[node].ansible_default_ipv4.address }}
+            name: {{ node }}
+            nodeid: {{ loop.index }}
+       }
+{% endfor %}
+}
+
+
+amf {
+     mode: disabled
+}
+
+quorum {
+       provider: corosync_votequorum
+}
+
+service {
+        ver:       1
+        name:      pacemaker
+}
+
+aisexec {
+        user:   root
+        group:  root
+}
+
+logging {
+        fileline: off
+        to_stderr: yes
+        to_logfile: yes
+        to_syslog: yes
+        logfile: /var/log/corosync/corosync.log 
+        syslog_facility: daemon
+        debug: off
+        timestamp: on
+        logger_subsys {
+                subsys: AMF
+                debug: off
+                tags: enter|leave|trace1|trace2|trace3|trace4|trace6
+        }
+}

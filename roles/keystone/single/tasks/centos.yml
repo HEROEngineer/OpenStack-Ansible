@@ -1,0 +1,27 @@
+- name: Install keystone
+  yum:
+    name: "{{ item }}"
+  with_items:
+    - openstack-keystone
+    - httpd
+    - mod_wsgi
+
+- name: Prerequisites Database
+  include: mysql.yml
+
+- name: Copy keystone.conf to /etc/keystone/
+  template:
+    src: keystone.conf.j2
+    dest: /etc/keystone/keystone.conf
+
+- name: Initialize Keystone
+  include: keystone_initialize.yml
+
+- name: Configure the Apache HTTP server
+  include: http.yml
+
+- name: Restart the Apache service
+  systemd:
+    name: apache2
+    enabled: yes
+    state: started

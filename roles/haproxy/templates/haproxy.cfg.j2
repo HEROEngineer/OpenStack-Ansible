@@ -1,0 +1,202 @@
+global
+  chroot  /var/lib/haproxy
+  daemon
+  group  haproxy
+  maxconn  4000
+  pidfile  /var/run/haproxy.pid
+  user  haproxy
+
+defaults
+  log  global
+  maxconn  4000
+  option  redispatch
+  retries  3
+  timeout  http-request 10s
+  timeout  queue 1m
+  timeout  connect 10s
+  timeout  client 1m
+  timeout  server 1m
+  timeout  check 10s
+
+ listen haproxy_status
+  bind {{ openstack_vip_address }}:6677
+  mode http
+  log global
+  stats enable
+  stats refresh 30s
+  stats show-node
+  stats uri /haproxy_stats
+  stats hide-version
+  stats auth admin:openstack
+
+ listen dashboard_cluster_ssl
+  bind {{ openstack_vip_address }}:443
+  balance  roundrobin
+  option  tcpka
+  option  httpchk
+  option  tcplog
+{% for host in groups.controller %}
+  server {{ host }} {{ hostvars[host].ansible_host }}:443 check inter 2000 rise 2 fall 5
+{% endfor %}
+
+ listen dashboard_cluster
+  bind {{ openstack_vip_address }}:80
+  balance  roundrobin
+  option  tcpka
+  option  httpchk
+  option  tcplog
+{% for host in groups.controller %}
+  server {{ host }} {{ hostvars[host].ansible_host }}:80 check inter 2000 rise 2 fall 5
+{% endfor %}
+ 
+ listen galera_cluster
+  bind {{ openstack_vip_address }}:3306
+  balance  roundrobin
+  option  mysql-check
+{% for host in groups.controller %}
+{% if host == groups['controller'][0] %}
+  server {{ host }} {{ hostvars[host].ansible_host }}:3306 check port 9200 inter 2000 rise 2 fall 5
+{% else %}
+  server {{ host }} {{ hostvars[host].ansible_host }}:3306 check port 9200 inter 2000 rise 2 fall 5 backup
+{% endif %}
+{% endfor %}
+
+ listen glance_api_cluster
+  bind {{ openstack_vip_address }}:9292
+  balance  roundrobin
+  option  tcpka
+  option  httpchk
+  option  tcplog
+{% for host in groups.controller %}
+  server {{ host }} {{ hostvars[host].ansible_host }}:9292 check inter 2000 rise 2 fall 5
+{% endfor %}
+
+ listen glance_registry_cluster
+  bind {{ openstack_vip_address }}:9191
+  balance  roundrobin
+  option  tcpka
+  option  tcplog
+{% for host in groups.controller %}
+  server {{ host }} {{ hostvars[host].ansible_host }}:9191 check inter 2000 rise 2 fall 5
+{% endfor %}
+
+ listen keystone_admin_public_internal_cluster
+  bind {{ openstack_vip_address }}:5000
+  balance  roundrobin
+  option  tcpka
+  option  httpchk
+  option  tcplog
+{% for host in groups.controller %}
+  server {{ host }} {{ hostvars[host].ansible_host }}:5000 check inter 2000 rise 2 fall 5
+{% endfor %}
+
+ listen nova_ec2_api_cluster
+  bind {{ openstack_vip_address }}:8773
+  balance  roundrobin
+  option  tcpka
+  option  tcplog
+{% for host in groups.controller %}
+  server {{ host }} {{ hostvars[host].ansible_host }}:8773 check inter 2000 rise 2 fall 5
+{% endfor %}
+
+ listen nova_compute_api_cluster
+  bind {{ openstack_vip_address }}:8774
+  balance  roundrobin
+  option  tcpka
+  option  httpchk
+  option  tcplog
+{% for host in groups.controller %}
+  server {{ host }} {{ hostvars[host].ansible_host }}:8774 check inter 2000 rise 2 fall 5
+{% endfor %}
+
+ listen nova_metadata_api_cluster
+  bind {{ openstack_vip_address }}:8775
+  balance  roundrobin
+  option  tcpka
+  option  tcplog
+{% for host in groups.controller %}
+  server {{ host }} {{ hostvars[host].ansible_host }}:8775 check inter 2000 rise 2 fall 5
+{% endfor %}
+
+ listen cinder_api_cluster
+  bind {{ openstack_vip_address }}:8776
+  balance  roundrobin
+  option  tcpka
+  option  httpchk
+  option  tcplog
+{% for host in groups.controller %}
+  server {{ host }} {{ hostvars[host].ansible_host }}:8776 check inter 2000 rise 2 fall 5
+{% endfor %}
+
+ listen nova_plancement_api_cluster
+  bind {{ openstack_vip_address }}:8778
+  balance  roundrobin
+  option  tcpka
+  option  tcplog
+{% for host in groups.controller %}
+  server {{ host }} {{ hostvars[host].ansible_host }}:8778 check inter 2000 rise 2 fall 5
+{% endfor %}
+
+ listen nova_vncproxy_cluster
+  bind {{ openstack_vip_address }}:6080
+  balance  roundrobin
+  option  tcpka
+  option  tcplog
+{% for host in groups.controller %}
+  server {{ host }} {{ hostvars[host].ansible_host }}:6080 check inter 2000 rise 2 fall 5
+{% endfor %}
+
+ listen neutron_api_cluster
+  bind {{ openstack_vip_address }}:9696
+  balance  roundrobin
+  option  tcpka
+  option  httpchk
+  option  tcplog
+{% for host in groups.controller %}
+  server {{ host }} {{ hostvars[host].ansible_host }}:9696 check inter 2000 rise 2 fall 5
+{% endfor %}
+
+ listen heat_api_cluster
+  bind {{ openstack_vip_address }}:8004
+  balance  roundrobin
+  option  tcplog
+  option  tcpka
+{% for host in groups.controller %}
+  server {{ host }} {{ hostvars[host].ansible_host }}:8004 check inter 2000 rise 2 fall 5
+{% endfor %}
+ 
+ listen heat_cfn_cluster
+  bind {{ openstack_vip_address }}:8000
+  balance  roundrobin
+  option  tcplog
+  option  tcpka
+{% for host in groups.controller %}
+  server {{ host }} {{ hostvars[host].ansible_host }}:8000 check inter 2000 rise 2 fall 5
+{% endfor %}
+ 
+ listen aodh_api_cluster
+  bind {{ openstack_vip_address }}:8042
+  balance  roundrobin
+  option  tcplog
+  option  tcpka
+{% for host in groups.controller %}
+  server {{ host }} {{ hostvars[host].ansible_host }}:8042 check inter 2000 rise 2 fall 5
+{% endfor %}
+
+ listen gnocchi_api_cluster
+  bind {{ openstack_vip_address }}:8041
+  balance  roundrobin
+  option  tcplog
+  option  tcpka
+{% for host in groups.controller %}
+  server {{ host }} {{ hostvars[host].ansible_host }}:8041 check inter 2000 rise 2 fall 5
+{% endfor %}
+ 
+ listen grafana_dashboard
+  bind {{ openstack_vip_address }}:{{ grafana_port }}
+  balance  roundrobin
+  option  tcplog
+  option  tcpka
+{% for host in groups.controller %}
+  server {{ host }} {{ hostvars[host].ansible_host }}:{{ grafana_port }} check inter 2000 rise 2 fall 5
+{% endfor %}

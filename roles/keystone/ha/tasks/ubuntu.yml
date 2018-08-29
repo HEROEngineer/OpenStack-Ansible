@@ -1,0 +1,30 @@
+- name: Install keystone
+  apt:
+    name: "{{ item }}"
+  with_items:
+    - keystone
+    - apache2
+    - libapache2-mod-wsgi
+
+- name: Prerequisites Database
+  include: mysql.yml
+  when: inventory_hostname == groups['controller'][0]
+
+- name: Copy keystone.conf to /etc/keystone/
+  template:
+    src: keystone.conf.j2
+    dest: /etc/keystone/keystone.conf
+
+- name: Configure the Apache HTTP server
+  include: http.yml
+
+- name: Initialize Keystone
+  include: keystone_initialize.yml
+
+- name: Configure the Apache HTTP server
+  include: http.yml
+
+- name: Restart the Apache service
+  service:
+    name: apache2
+    state: restarted

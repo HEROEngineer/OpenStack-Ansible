@@ -1,0 +1,45 @@
+---
+- hosts: controller
+  become: yes
+  roles:
+#    - { role: common/hostname }
+#    - { role: chrony }
+#    - { role: package }
+#    - { role: common/firewall }
+#    - { role: mariadb/mariadb-galera }
+#    - { role: common/apparmor }
+#    - { role: rabbitmq/multiple }
+#    - { role: memcached}
+#    - { role: etcd }
+#    - { role: haproxy }
+#    - {role: pacemaker }
+#    - { role: keystone/ha }
+    - { role: glance/ha }
+#    - { role: nova/controller}
+#    - { role: neutron/controller }
+#    - { role: horizon }
+#    - { role: cinder/controller }
+#    - { role: heat }
+#    - { role: aodh }
+#    - { role: gnocchi }
+#    - { role: ceilometer/controller }
+#    - { role: docker }
+#    - { role: grafana }
+
+#- hosts: compute
+#  become: yes
+#  roles:
+#    - { role: common/hostname }
+#    - { role: chrony }
+#    - { role: package }
+#    - { role: nova/compute}
+#    - { role: neutron/compute }
+#    - { role: ceilometer/compute }
+
+#- hosts: storage
+#  become: yes
+#  roles:
+#    - { role: common/hostname }
+#    - { role: chrony }
+#    - { role: package }
+#    - { role: cinder/storage }

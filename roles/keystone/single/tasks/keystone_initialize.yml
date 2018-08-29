@@ -1,0 +1,20 @@
+- name: Populate the Identity service database
+  shell: keystone-manage db_sync
+  args:
+    executable: /bin/sh
+
+- name: Initialize Fernet key repositories
+  command: "{{ item }}"
+  with_items:
+    - keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
+    - keystone-manage credential_setup --keystone-user keystone --keystone-group keystone
+
+- name: Bootstrap the Identity service
+  shell: | 
+    keystone-manage bootstrap \
+    --bootstrap-password {{ keystone_admin_password }} \
+    --bootstrap-admin-url {{ keystone_url }} \
+    --bootstrap-internal-url {{ keystone_url }} \
+    --bootstrap-public-url {{ keystone_url }} \
+    --bootstrap-region-id RegionOne
+

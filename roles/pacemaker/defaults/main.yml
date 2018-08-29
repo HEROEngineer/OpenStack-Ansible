@@ -1,0 +1,23 @@
+#crm configure
+stonith_enabled_parameter: "false"
+pe_warn_series_max_parameter: "1000"
+pe_input_series_max_parameter: "1000"
+pe_error_series_max_parameter: "1000"
+cluster_recheck_interval_parameter: "5min"
+stonith_enabled: stonith-enabled={{ stonith_enabled_parameter }}
+pe_warn_series_max: pe-warn-series-max={{ pe_warn_series_max_parameter }}
+pe_input_series_max: pe-input-series-max={{ pe_input_series_max_parameter }}
+pe_error_series_max: pe-error-series-max={{ pe_error_series_max_parameter }}
+cluster_recheck_interval: cluster-recheck-interval={{ cluster_recheck_interval_parameter }}
+crm_configure: "{{ pe_warn_series_max }} {{ pe_input_series_max }} {{ pe_error_series_max }} {{ cluster_recheck_interval }}"
+
+# crm configure colocation and order
+colocation: "vip-with-haproxy inf: vip haproxy-clone"
+order: "haproxy-after-vip mandatory: vip haproxy-clone"
+# crm vip
+net_mask: "{{ ansible_default_ipv4.network }}/{{ ansible_default_ipv4.netmask }}"
+net_cidr: "{{ net_mask | ipaddr('prefix') }}"
+interval: "30s"
+crm_vip: ocf:heartbeat:IPaddr2 params ip="{{ openstack_vip_address }}" cidr_netmask="{{ net_cidr }}" op monitor interval="{{ interval }}"
+
+

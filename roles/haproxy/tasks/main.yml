@@ -1,0 +1,6 @@
+- name: Install HAProxy
+  include: ubuntu.yml
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: Add clustercheck to mysql
+  include: mysql.yml
