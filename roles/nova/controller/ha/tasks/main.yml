@@ -8,3 +8,4 @@
 
 - name: Create Nova dependency
   include: setting.yml
+  when: inventory_hostname == groups['controller'][0]
