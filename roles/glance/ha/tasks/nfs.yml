@@ -1,0 +1,10 @@
+- name: Install NFS client
+  apt:
+    name: nfs-common
+
+- name: Mount NFS dir to /var/lib/glance/images
+  mount:
+    path: /var/lib/glance/images
+    src: "{{ nfs_server_ip }}:{{ nfs_src_path }}"
+    fstype: nfs
+    state: mounted
