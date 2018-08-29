@@ -11,7 +11,7 @@
     - { role: etcd }
     - { role: keystone/single }
     - { role: glance/single }
-    - { role: nova/controller }
+    - { role: nova/controller/single }
     - { role: neutron/controller }
     - { role: horizon }
     - { role: cinder/controller }
