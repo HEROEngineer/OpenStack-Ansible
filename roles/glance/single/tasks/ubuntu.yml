@@ -1,0 +1,17 @@
+- name: Install glance
+  apt:
+    name: glance
+
+- name: Copy glance.conf
+  include: config.yml
+
+- name: Prerequisites Database
+  include: mysql.yml
+
+- name: Restart the Glance service
+  service:
+    name: "{{ item }}"
+    state: restarted
+  with_items:
+    - glance-registry
+    - glance-api

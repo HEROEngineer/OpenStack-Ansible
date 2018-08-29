@@ -1,0 +1,45 @@
+[DEFAULT]
+{% set rabbitmq_cluster = [] %}
+{%- for host in groups.controller -%}
+{{ rabbitmq_cluster.append( rabbitmq_user+":"+rabbitmq_password+"@"+host ) }}
+{%- endfor -%}
+
+transport_url = rabbit://{{ rabbitmq_cluster|join(',') }}
+
+[database]
+connection = mysql+pymysql://glance:{{ glance_db_password }}@{{ openstack_vip_address }}/glance
+
+[glance_store]
+stores = file,http
+default_store = file
+filesystem_store_datadir = /var/lib/glance/images/
+
+[image_format]
+disk_formats = ami,ari,aki,vhd,vhdx,vmdk,raw,qcow2,vdi,iso,ploop.root-tar
+
+[keystone_authtoken]
+auth_uri = http://{{ openstack_vip_address }}:{{ keystone_port }}
+auth_url = http://{{ openstack_vip_address }}:{{ keystone_port }}
+{% set memcached_cluster = [] %}
+{%- for host in groups.controller -%}
+{{ memcached_cluster.append( host+":"+'11211' ) }}
+{%- endfor -%}
+memcached_servers = {{ memcached_cluster|join(',') }}
+auth_type = password
+project_domain_name = Default
+user_domain_name = Default
+project_name = service
+username = glance
+password = {{ glance_user_password }}
+
+[oslo_messaging_notifications]
+driver = messagingv2
+
+[paste_deploy]
+flavor = keystone
+
+[oslo_messaging_rabbit]
+amqp_durable_queues = true
+rabbit_retry_interval = 1
+rabbit_retry_backoff = 2
+rabbit_ha_queues = true

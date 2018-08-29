@@ -1,0 +1,24 @@
+- name: Create the glance database
+  mysql_db:
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    name: glance
+    state: present
+
+- name: Grant proper access to the glance database
+  mysql_user:
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    name: glance
+    password: "{{ glance_db_password }}"
+    priv: "glance.*:ALL"
+    state: present
+    host: "{{ item }}"
+  with_items:
+    - localhost
+    - "%"
+
+- name: Populate the Image service database
+  shell: glance-manage db_sync
+  args:
+    executable: /bin/sh
