@@ -12,6 +12,8 @@ firewall_driver = nova.virt.firewall.NoopFirewallDriver
 {%- endfor -%}
 
 transport_url = rabbit://{{ rabbitmq_cluster|join(',') }}
+osapi_compute_listen = {{ inventory_hostname }}
+metadata_listen = {{ inventory_hostname }}
 
 [api]
 auth_strategy = keystone
