@@ -14,8 +14,8 @@
 #    - { role: haproxy }
 #    - {role: pacemaker }
 #    - { role: keystone/ha }
-    - { role: glance/ha }
-#    - { role: nova/controller}
+#    - { role: glance/ha }
+    - { role: nova/controller/ha }
 #    - { role: neutron/controller }
 #    - { role: horizon }
 #    - { role: cinder/controller }
