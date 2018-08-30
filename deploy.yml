@@ -14,10 +14,10 @@
     - { role: nova/controller/single }
     - { role: neutron/controller/single }
     - { role: horizon }
-    - { role: cinder/controller }
-    - { role: heat }
-    - { role: aodh }
-    - { role: gnocchi }
+    - { role: cinder/controller/single }
+    - { role: heat/single }
+    - { role: aodh/single }
+    - { role: gnocchi/single }
     - { role: ceilometer/controller }
     - { role: docker }
     - { role: grafana }
