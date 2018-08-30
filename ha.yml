@@ -16,14 +16,14 @@
 #    - { role: keystone/ha }
 #    - { role: glance/ha }
 #    - { role: nova/controller/ha }
-    - { role: neutron/controller/ha }
+#    - { role: neutron/controller/ha }
 #    - { role: horizon }
-#    - { role: cinder/controller }
-#    - { role: heat }
-#    - { role: aodh }
-#    - { role: gnocchi }
-#    - { role: ceilometer/controller }
+#    - { role: cinder/controller/ha }
+#    - { role: heat/ha }
+#    - { role: aodh/ha }
 #    - { role: docker }
+#    - { role: gnocchi/ha }
+#    - { role: ceilometer/controller }
 #    - { role: grafana }
 
 #- hosts: compute
