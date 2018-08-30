@@ -41,7 +41,7 @@ defaults
 
  listen dashboard_cluster
   bind {{ openstack_vip_address }}:80
-  balance  roundrobin
+  balance  source
   option  tcpka
   option  httpchk
   option  tcplog
