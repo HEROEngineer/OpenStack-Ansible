@@ -1,0 +1,23 @@
+- name: Install cinder
+  yum:
+    name: openstack-cinder
+
+- name: Copy glance.conf
+  include: config.yml
+
+- name: Prerequisites Database
+  include: mysql.yml
+
+- name: Restart the Cinder service
+  systemd:
+    name: "{{ item }}"
+    enabled: yes
+    state: started
+  with_items:
+    - openstack-cinder-api.service
+    - openstack-cinder-scheduler.service
+
+- name: Restart the Nova API service
+  systemd:
+    name: openstack-nova-api.service
+    state: restarted

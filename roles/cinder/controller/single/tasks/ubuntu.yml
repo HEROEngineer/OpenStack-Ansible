@@ -1,0 +1,21 @@
+- name: Install cinder
+  apt:
+    name: "{{ item }}"
+  with_items:
+    - cinder-api 
+    - cinder-scheduler
+
+- name: Copy cinder.conf
+  include: config.yml
+
+- name: Prerequisites Database
+  include: mysql.yml
+
+- name: Restart the Block Storage service
+  service:
+    name: "{{ item }}"
+    state: restarted
+  with_items:
+    - nova-api
+    - cinder-scheduler
+    - apache2

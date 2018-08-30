@@ -1,0 +1,25 @@
+- name: Create cinder user
+  command: openstack {{ keystone_auth }} user create --domain default --password {{ cinder_user_password }} cinder
+
+- name: Create admin role to the cinder user and service project
+  command: openstack {{ keystone_auth }} role add --project service --user cinder admin
+
+- name: Create cinder v2 service
+  command: openstack {{ keystone_auth }} service create --name cinderv2 --description "OpenStack Block Storage" volumev2
+
+- name: Create cinder v3 service
+  command: openstack {{ keystone_auth }} service create --name cinderv3 --description "OpenStack Block Storage" volumev3
+
+- name: Create Cinder v2 API endpoint
+  command: openstack {{ keystone_auth }} endpoint create --region RegionOne volumev2 "{{ item }}" http://{{ openstack_vip_address }}:8776/v2/%\(project_id\)s
+  with_items:
+    - public
+    - internal
+    - admin
+
+- name: Create Cinder v3 API endpoint
+  command: openstack {{ keystone_auth }} endpoint create --region RegionOne volumev3 "{{ item }}" http://{{ openstack_vip_address }}:8776/v3/%\(project_id\)s
+  with_items:
+    - public
+    - internal
+    - admin
