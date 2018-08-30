@@ -1,4 +1,0 @@
-- name: Copy cinder.conf to /etc/cinder/
-  template:
-    src: cinder.conf.j2
-    dest: /etc/cinder/cinder.conf
