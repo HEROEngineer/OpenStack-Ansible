@@ -1,0 +1,52 @@
+[DEFAULT]
+heat_metadata_server_url = http://{{ openstack_vip_address }}:8000
+heat_waitcondition_server_url = http://{{ openstack_vip_address }}:8000/v1/waitcondition
+stack_domain_admin = heat_domain_admin
+stack_domain_admin_password = {{ heat_user_password }}
+stack_user_domain_name = heat
+{% set rabbitmq_cluster = [] %}
+{%- for host in groups.controller -%}
+{{ rabbitmq_cluster.append( rabbitmq_user+":"+rabbitmq_password+"@"+host ) }}
+{%- endfor -%}
+
+transport_url = rabbit://{{ rabbitmq_cluster|join(',') }}
+
+[clients_keystone]
+auth_uri = http://{{ openstack_vip_address }}:{{keystone_port}}
+
+[database]
+connection = mysql+pymysql://heat:{{ heat_db_password }}@{{ openstack_vip_address }}/heat
+
+[ec2authtoken]
+auth_uri = http://controller:5000/v3
+
+[keystone_authtoken]
+auth_uri = http://{{ openstack_vip_address }}:{{keystone_port}}
+auth_url = http://{{ openstack_vip_address }}:{{keystone_port}}
+{% set memcached_cluster = [] %}
+{%- for host in groups.controller -%}
+{{ memcached_cluster.append( host+":"+'11211' ) }}
+{%- endfor -%}
+memcached_servers = {{ memcached_cluster|join(',') }}
+auth_type = password
+project_domain_name = Default
+user_domain_name = Default
+project_name = service
+username = heat
+password = {{ heat_user_password }}
+
+[oslo_messaging_notifications]
+driver = messagingv2
+
+[trustee]
+auth_type = password
+auth_url = http://{{ openstack_vip_address }}:{{keystone_port}}
+username = heat
+password = {{ heat_user_password }}
+user_domain_name = Default
+
+[oslo_messaging_rabbit]
+amqp_durable_queues = true
+rabbit_retry_interval = 1
+rabbit_retry_backoff = 2
+rabbit_ha_queues = true
