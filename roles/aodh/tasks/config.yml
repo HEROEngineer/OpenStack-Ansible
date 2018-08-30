@@ -1,4 +1,0 @@
-- name: Copy aodh.conf to /etc/aodh/
-  template:
-    src: aodh.conf.j2
-    dest: /etc/aodh/aodh.conf
