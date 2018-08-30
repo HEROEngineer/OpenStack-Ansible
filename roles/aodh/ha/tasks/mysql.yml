@@ -1,0 +1,24 @@
+- name: Create the aodh database
+  mysql_db:
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    name: aodh
+    state: present
+
+- name: Grant proper access to the aodh database
+  mysql_user:
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    name: aodh
+    password: "{{ aodh_db_password }}"
+    priv: "aodh.*:ALL"
+    state: present
+    host: "{{ item }}"
+  with_items:
+    - localhost
+    - "%"
+
+- name: Populate the Alarm service database
+  shell: aodh-dbsync
+  args:
+    executable: /bin/sh

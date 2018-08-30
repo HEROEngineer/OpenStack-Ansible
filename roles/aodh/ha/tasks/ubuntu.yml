@@ -1,0 +1,27 @@
+- name: Install aodh
+  apt:
+    name: "{{ item }}"
+  with_items:
+    - aodh-api 
+    - aodh-evaluator 
+    - aodh-notifier
+    - aodh-listener 
+    - aodh-expirer
+    - python-aodhclient
+
+- name: Copy aodh.conf
+  include: config.yml
+
+- name: Prerequisites Database
+  include: mysql.yml
+  when: inventory_hostname == groups['controller'][0]
+
+- name: Restart the Alarm service
+  service:
+    name: "{{ item }}"
+    state: restarted
+  with_items:
+    - apache2
+    - aodh-evaluator 
+    - aodh-notifier
+    - aodh-listener 
