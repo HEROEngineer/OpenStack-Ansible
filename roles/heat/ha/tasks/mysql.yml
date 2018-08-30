@@ -1,0 +1,24 @@
+- name: Create the heat database
+  mysql_db:
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    name: heat
+    state: present
+
+- name: Grant proper access to the heat database
+  mysql_user:
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    name: heat
+    password: "{{ heat_db_password }}"
+    priv: "heat.*:ALL"
+    state: present
+    host: "{{ item }}"
+  with_items:
+    - localhost
+    - "%"
+
+- name: Populate the Orchestration service database
+  shell: heat-manage db_sync
+  args:
+    executable: /bin/sh
