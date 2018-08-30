@@ -15,8 +15,8 @@
 #    - {role: pacemaker }
 #    - { role: keystone/ha }
 #    - { role: glance/ha }
-    - { role: nova/controller/ha }
-#    - { role: neutron/controller }
+#    - { role: nova/controller/ha }
+    - { role: neutron/controller/ha }
 #    - { role: horizon }
 #    - { role: cinder/controller }
 #    - { role: heat }
