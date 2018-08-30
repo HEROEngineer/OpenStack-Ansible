@@ -12,7 +12,7 @@
     - { role: keystone/single }
     - { role: glance/single }
     - { role: nova/controller/single }
-    - { role: neutron/controller }
+    - { role: neutron/controller/single }
     - { role: horizon }
     - { role: cinder/controller }
     - { role: heat }
