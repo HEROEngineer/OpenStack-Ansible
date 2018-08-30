@@ -1,0 +1,26 @@
+- name: Create the neutron database
+  mysql_db:
+    login_user: root
+    name: neutron
+    state: present
+
+- name: Grant proper access to the neutron database
+  mysql_user:
+    name: neutron
+    password: "{{ neutron_db_password }}"
+    priv: "neutron.*:ALL"
+    state: present
+    host: "{{ item }}"
+  with_items:
+    - localhost
+    - "%"
+
+- name: Populate the Network service database
+  shell: neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head
+  args:
+    executable: /bin/sh
+
+- name: Populate the Network Lbaas service database
+  shell: neutron-db-manage --subproject neutron-lbaas upgrade head
+  args:
+    executable: /bin/sh
