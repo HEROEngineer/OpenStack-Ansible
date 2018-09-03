@@ -1,0 +1,6 @@
+- name: Mount NFS dir to /var/lib/gnocchi
+  mount:
+    path: /var/lib/gnocchi
+    src: "{{ nfs_server_ip }}:{{ nfs_src_gnocchi_path }}"
+    fstype: nfs
+    state: mounted

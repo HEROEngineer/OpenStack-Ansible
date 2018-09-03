@@ -1,0 +1,50 @@
+- name: Copy gnocchi.conf to /etc/gnocchi/
+  template:
+    src: gnocchi.conf.j2
+    dest: /etc/gnocchi/gnocchi.conf
+
+- name: Copy gnocchi-api.conf to /etc/apache2/sites-available/
+  template:
+    src: gnocchi-api.conf.j2
+    dest: /etc/apache2/sites-available/gnocchi-api.conf
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: Change permission /var/lib/gnocchi to gnocchi
+  file:
+    path: /var/lib/gnocchi
+    owner: gnocchi
+    group: gnocchi
+    recurse: yes
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: Mount gnocchi nfs dir
+  include: nfs.yml
+
+- name: Copy 10-gnocchi_wsgi.conf to /etc/httpd/conf.d/
+  template:
+    src: 10-gnocchi_wsgi.j2
+    dest: /etc/httpd/conf.d/10-gnocchi_wsgi.conf
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: Change permission /etc/gnocchi/gnocchi.conf to gnocchi
+  file:
+    path: /etc/gnocchi/gnocchi.conf 
+    owner: gnocchi
+    group: gnocchi
+    mode: 0640
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: Create /var/www/cgi-bin/gnocchi directory
+  file:
+    path: /var/www/cgi-bin/gnocchi
+    state: directory
+    owner: gnocchi
+    group: gnocchi
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: Copy gnocchi-api to /var/www/cgi-bin/gnocchi/app 
+  file:
+    src: /usr/lib/python2.7/site-packages/gnocchi/rest/gnocchi-api
+    dest: /var/www/cgi-bin/gnocchi/app
+    state: file
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'

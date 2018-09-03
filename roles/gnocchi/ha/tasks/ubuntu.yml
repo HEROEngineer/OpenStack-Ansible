@@ -1,0 +1,31 @@
+- name: Enable the Gnocchi for OpenStack repository Queens
+  command: add-apt-repository cloud-archive:queens-proposed
+
+- name: Upgrade the packages
+  apt:
+    update_cache: yes
+    upgrade: dist
+
+- name: Install gnocchi
+  apt:
+    name: "{{ item }}"
+  with_items:
+    - python-gnocchi
+    - gnocchi-api
+    - gnocchi-metricd
+    - python-gnocchiclient
+
+- name: Copy gnocchi config
+  include: config.yml
+
+- name: Prerequisites Database
+  include: mysql.yml
+  when: inventory_hostname == groups['controller'][0]
+
+- name: Restart the Gnocchi service
+  service:
+    name: "{{ item }}"
+    state: restarted
+  with_items:
+    - apache2
+    - gnocchi-metricd
