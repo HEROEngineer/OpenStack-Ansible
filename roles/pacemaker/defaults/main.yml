@@ -12,7 +12,7 @@ cluster_recheck_interval: cluster-recheck-interval={{ cluster_recheck_interval_p
 crm_configure: "{{ pe_warn_series_max }} {{ pe_input_series_max }} {{ pe_error_series_max }} {{ cluster_recheck_interval }}"
 
 # crm configure colocation and order
-colocation: "vip-with-haproxy inf: vip haproxy-clone"
+colocation: "vip-with-haproxy inf: vip haproxy-clone ms_redis"
 order: "haproxy-after-vip mandatory: vip haproxy-clone"
 # crm vip
 net_mask: "{{ ansible_default_ipv4.network }}/{{ ansible_default_ipv4.netmask }}"
