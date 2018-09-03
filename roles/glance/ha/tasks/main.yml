@@ -6,10 +6,10 @@
   include: centos.yml
   when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
-#- name: Create glance dependency
-#  include: setting.yml
-#  when: inventory_hostname == groups['controller'][0]
+- name: Create glance dependency
+  include: setting.yml
+  when: inventory_hostname == groups['controller'][0]
 
-#- name: Install and Mount NFS dir
-#  include: nfs.yml
-#  when: enable_glance_nfs  == 'yes'
+- name: Install and Mount NFS dir
+  include: nfs.yml
+  when: enable_glance_nfs  == 'yes'

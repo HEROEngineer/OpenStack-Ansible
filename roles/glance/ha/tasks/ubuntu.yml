@@ -1,13 +1,13 @@
-#- name: Install glance
-#  apt:
-#    name: glance
+- name: Install glance
+  apt:
+    name: glance
 
 - name: Copy glance.conf
   include: config.yml
 
-#- name: Prerequisites Database
-#  include: mysql.yml
-#  when: inventory_hostname == groups['controller'][0]
+- name: Prerequisites Database
+  include: mysql.yml
+  when: inventory_hostname == groups['controller'][0]
 
 - name: Restart the Glance service
   service:
