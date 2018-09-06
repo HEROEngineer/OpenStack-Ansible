@@ -51,8 +51,10 @@ defaults
  
  listen galera_cluster
   bind {{ openstack_vip_address }}:3306
-  balance  roundrobin
+  balance source
   option  mysql-check
+  timeout client 1h
+  timeout server 1h
 {% for host in groups.controller %}
 {% if host == groups['controller'][0] %}
   server {{ host }} {{ hostvars[host].ansible_host }}:3306 check port 9200 inter 2000 rise 2 fall 5
