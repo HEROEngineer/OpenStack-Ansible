@@ -18,7 +18,7 @@
     - { role: heat/single }
     - { role: aodh/single }
     - { role: gnocchi/single }
-    - { role: ceilometer/controller }
+    - { role: ceilometer/controller/single }
     - { role: docker }
     - { role: grafana }
 
