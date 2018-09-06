@@ -71,11 +71,20 @@ auth_url = http://{{ openstack_vip_address }}:{{keystone_port}}/v3
 username = placement
 password = {{ plancement_user_password }}
 
+[cache]
+enabled = true
+{% set memcached_cluster = [] %}
+{%- for host in groups.controller -%}
+{{ memcached_cluster.append( host+":"+'11211' ) }}
+{%- endfor -%}
+memcached_servers = {{ memcached_cluster|join(',') }}
+backend = oslo_cache.memcache_pool
+
 [vnc]
 enabled = true
 server_listen = $my_ip
 server_proxyclient_address = $my_ip
-vncproxy_host = $my_ip
+novncproxy_host = $my_ip
 
 [scheduler]
 discover_hosts_in_cells_interval = 300
