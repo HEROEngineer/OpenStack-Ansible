@@ -1,0 +1,7 @@
+- name: Pacemaker configure redis to the cluster
+  shell: "{{ item }}"
+  with_items:
+    - crm configure primitive redis ocf:heartbeat:redis op monitor interval="1s" {{ monitor_depth }} {{ monitor_master }} {{ monitor_slave }}
+    - crm configure ms ms_redis redis meta notify="true" interleave="true"
+  when: inventory_hostname == groups['controller'][0]
+

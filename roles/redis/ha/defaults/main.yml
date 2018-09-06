@@ -1,0 +1,16 @@
+---
+redis_version: 4.0.11
+redis_download_url: http://download.redis.io/releases/redis-{{ redis_version }}.tar.gz
+redis_master_slave_auth_password: 97d494ddd4568660740b
+
+#Pacemaker ocf
+depth: "0"
+timeout: "60s"
+interval_depth: "45s"
+interval_master: "20s"
+interval_slave: "60s"
+master_role: "Master"
+slave_role: "Slave"
+monitor_depth: op monitor depth={{ depth }} timeout={{ timeout }} interval={{ interval_depth }}
+monitor_master: op monitor role={{ master_role }} depth={{ depth }} timeout={{ timeout }} interval={{ interval_master }}
+monitor_slave: op monitor role={{ slave_role }} depth={{ depth }} timeout={{ timeout }} interval={{ interval_slave }}

@@ -1,0 +1,35 @@
+- name: Copy redis.conf to /etc/redis
+  template:
+    src: redis.conf.j2
+    dest: /etc/redis/redis.conf
+
+- name: Copy sentinel.conf to /etc/redis
+  template:
+    src: sentinel.conf.j2
+    dest: /etc/redis/sentinel.conf
+
+- name: Copy redis_sentinel to /etc/init.d/
+  template:
+    src: redis_sentinel.j2
+    dest: /etc/init.d/redis_sentinel
+    mode: a+x
+
+- name: Copy redis.servce to /etc/systemd/system/
+  template:
+    src: redis.service.j2
+    dest: /etc/systemd/system/redis.service
+
+- name: Copy redis-sentinel.servce to /etc/systemd/system/
+  template:
+    src: redis-sentinel.service.j2
+    dest: /etc/systemd/system/redis-sentinel.service
+
+- name: Change ocf redis
+  replace:
+    path: /usr/lib/ocf/resource.d/heartbeat/redis
+    regexp: "{{ item.src }}"
+    replace: "{{ item.replace }}"
+  with_items:
+    - { src: '/usr/bin/redis-server', replace: '/usr/local/bin/redis-server' }
+    - { src: '/usr/bin/redis-cli', replace: '/usr/local/bin/redis-cli' }
+    - { src: 'redis-server.pid', replace: 'redis.pid' }

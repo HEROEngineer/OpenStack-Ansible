@@ -1,0 +1,13 @@
+port 26379
+
+bind 0.0.0.0
+
+daemonize yes
+
+logfile /var/log/redis/redis-sentinel.log
+
+sentinel monitor master {{ groups['controller'][0] }} 6379 2
+sentinel auth-pass master {{ redis_master_slave_auth_password }}
+sentinel down-after-milliseconds master 60000
+sentinel failover-timeout master 180000
+sentinel parallel-syncs master 1

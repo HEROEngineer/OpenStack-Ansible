@@ -1,0 +1,22 @@
+supervised systemd
+
+daemonize yes
+
+protected-mode no
+
+port 6379
+
+bind 0.0.0.0
+
+loglevel notice
+
+logfile /var/log/redis/redis.log
+
+dir /var/lib/redis
+
+slave-serve-stale-data yes
+
+requirepass {{ redis_master_slave_auth_password }}
+masterauth {{ redis_master_slave_auth_password }}
+
+

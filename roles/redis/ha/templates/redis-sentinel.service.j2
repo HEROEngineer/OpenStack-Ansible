@@ -1,0 +1,11 @@
+[Unit]
+Description=Redis Sentinel Monitor
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/etc/init.d/redis_sentinel start
+ExecStop=/etc/init.d/redis_sentinel stop
+
+[Install]
+WantedBy=multi-user.target

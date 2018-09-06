@@ -1,0 +1,49 @@
+- name: Create redis group
+  group:
+    name: redis
+    state: present
+
+- name: Create redis user
+  user:
+    name: redis
+    group: redis
+
+- name: Create redis directory
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: redis
+    group: redis
+    mode: 0755
+  with_items:
+    - /etc/redis/
+    - /opt/redis/
+    - /var/lib/redis/
+    - /var/log/redis/
+
+- name: Download redis {{ redis_version }}
+  get_url:
+    url: "{{ redis_download_url }}"
+    dest: "/opt/redis/redis-{{ redis_version }}.tar.gz"
+
+- name: Extract redis-{{ redis_version }}.tar.gz
+  unarchive:
+    src: "/opt/redis/redis-{{ redis_version }}.tar.gz"
+    dest: /opt/redis/
+    remote_src: yes
+
+- name: Compile redis
+  make:
+    chdir: /opt/redis/redis-{{ redis_version }}
+    target: install
+
+- name: Copy config file
+  include: config.yml
+
+- name: Stop redis-server
+  service:
+    name: redis
+    state: stopped
+
+- name: Configure Pacemaker redis ocf
+  include: crm.yml
