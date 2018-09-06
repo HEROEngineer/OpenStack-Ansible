@@ -12,7 +12,8 @@
 #    - { role: memcached}
 #    - { role: etcd }
 #    - { role: haproxy }
-#    - {role: pacemaker }
+#    - { role: redis/ha }
+#    - { role: pacemaker }
 #    - { role: keystone/ha }
 #    - { role: glance/ha }
 #    - { role: nova/controller/ha }
@@ -21,9 +22,9 @@
 #    - { role: cinder/controller/ha }
 #    - { role: heat/ha }
 #    - { role: aodh/ha }
-#    - { role: docker }
 #    - { role: gnocchi/ha }
-#    - { role: ceilometer/controller }
+#    - { role: ceilometer/controller/ha }
+#    - { role: docker }
 #    - { role: grafana }
 
 #- hosts: compute
