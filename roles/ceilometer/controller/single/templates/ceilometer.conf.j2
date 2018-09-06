@@ -1,5 +1,5 @@
 [DEFAULT]
-et rabbitmq_cluster = [] %}
+{% set rabbitmq_cluster = [] %}
 {%- for host in groups.controller -%}
 {{ rabbitmq_cluster.append( rabbitmq_user+":"+rabbitmq_password+"@"+host ) }}
 {%- endfor -%}
