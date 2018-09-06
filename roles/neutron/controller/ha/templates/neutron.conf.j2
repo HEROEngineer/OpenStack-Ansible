@@ -1,7 +1,7 @@
 [DEFAULT]
 core_plugin = ml2
-service_plugins = router,neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2
-#service_plugins = router
+#service_plugins = router,neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2
+service_plugins = router
 allow_overlapping_ips = true
 {% set rabbitmq_cluster = [] %}
 {%- for host in groups.controller -%}
@@ -12,7 +12,13 @@ transport_url = rabbit://{{ rabbitmq_cluster|join(',') }}
 auth_strategy = keystone
 notify_nova_on_port_status_changes = true
 notify_nova_on_port_data_changes = true
-bind_host = {{ inventory_hostname }}
+bind_host = {{ ansible_default_ipv4.address }}
+
+# linux bridge HA settings
+l3_ha = True
+max_l3_agents_per_router = 0
+dhcp_agents_per_network = {{ groups['controller'] | length }}
+
 
 [agent]
 root_helper = sudo /usr/bin/neutron-rootwrap /etc/neutron/rootwrap.conf

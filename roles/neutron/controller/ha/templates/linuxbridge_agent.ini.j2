@@ -11,5 +11,5 @@ enable_security_group = true
 
 [vxlan]
 enable_vxlan = true
-local_ip = {{ hostvars[inventory_hostname]['ansible_%s' | format(network_manage_interface)].ipv4.address }} 
+local_ip = {{ ansible_default_ipv4.address }}
 l2_population = true
