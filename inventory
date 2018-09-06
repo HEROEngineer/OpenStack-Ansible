@@ -3,6 +3,7 @@ controller1    ansible_host=10.50.2.4
 controller2    ansible_host=10.50.2.5
 controller3    ansible_host=10.50.2.6
 compute1      ansible_host=10.50.2.7
+compute2      ansible_host=10.50.2.13
 storage       ansible_host=10.50.2.8
 
 [controller]
@@ -14,6 +15,7 @@ controller3  ansible_ssh_user=localadmin ansible_become_pass=openstack
 [compute]
 
 compute1   ansible_ssh_user=localadmin ansible_become_pass=openstack
+compute2   ansible_ssh_user=localadmin ansible_become_pass=openstack
 
 [storage]
 
