@@ -48,6 +48,11 @@ nfs_server_ip: "10.50.2.12"
 ################
 lvm_physical_volume: "vdb"
 
+################
+# Gnocchi options
+################
+nfs_src_gnocchi_path: "/home/localadmin/gnocchi"
+
 ####################
 # Database options
 ####################
