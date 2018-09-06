@@ -1,0 +1,21 @@
+- name: Install ceilometer
+  yum:
+    name: "{{ item }}"
+  with_items:
+    - openstack-ceilometer-notification
+    - openstack-ceilometer-central
+
+- name: Copy ceilometer.conf
+  include: config.yml
+
+- name: Prerequisites Database
+  include: mysql.yml
+
+- name: Restart the Telemetry  service
+  systemd:
+    name: "{{ item }}"
+    enabled: yes
+    state: started
+  with_items:
+    - openstack-ceilometer-notification.service
+    - openstack-ceilometer-central.service
