@@ -8,7 +8,6 @@
     - neutron-l3-agent 
     - neutron-dhcp-agent
     - neutron-metadata-agent
-    - neutron-lbaasv2-agent
 
 - name: Copy neutron.conf
   include: config.yml
@@ -27,5 +26,4 @@
     - neutron-l3-agent 
     - neutron-dhcp-agent
     - neutron-metadata-agent
-    - neutron-lbaasv2-agent
     - nova-api

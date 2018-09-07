@@ -28,10 +28,10 @@
     src: metadata_agent.ini.j2
     dest: /etc/neutron/metadata_agent.ini
 
-- name: Copy neutron_lbaas.conf to /etc/neutron/
-  template:
-    src: neutron_lbaas.conf.j2
-    dest: /etc/neutron/neutron_lbaas.conf
+#- name: Copy neutron_lbaas.conf to /etc/neutron/
+#  template:
+#    src: neutron_lbaas.conf.j2
+#    dest: /etc/neutron/neutron_lbaas.conf
 
 - name: Copy lbaas_agent.ini to /etc/neutron/
   template:
