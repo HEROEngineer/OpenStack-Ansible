@@ -1,7 +1,7 @@
 [DEFAULT]
 core_plugin = ml2
-service_plugins = router,neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2
-#service_plugins = router
+#service_plugins = router,neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2
+service_plugins = router
 allow_overlapping_ips = true
 {% set rabbitmq_cluster = [] %}
 {%- for host in groups.controller -%}
