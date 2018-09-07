@@ -21,6 +21,7 @@ connection = mysql+pymysql://neutron:{{ neutron_db_password }}@{{ openstack_vip_
 
 [keystone_authtoken]
 auth_url = http://{{ openstack_vip_address }}:{{keystone_port}}
+auth_uri = http://{{ openstack_vip_address }}:{{keystone_port}}
 {% set memcached_cluster = [] %}
 {%- for host in groups.controller -%}
 {{ memcached_cluster.append( host+":"+'11211' ) }}
@@ -45,9 +46,3 @@ password = {{ nova_user_password }}
 
 [oslo_messaging_notifications]
 driver = messagingv2
-
-[oslo_messaging_rabbit]
-amqp_durable_queues = true
-rabbit_retry_interval = 1
-rabbit_retry_backoff = 2
-rabbit_ha_queues = true

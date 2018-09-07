@@ -18,6 +18,7 @@ lock_path = /var/lib/neutron/tmp
 
 [keystone_authtoken]
 auth_url = http://{{ openstack_vip_address }}:{{keystone_port}}
+auth_uri = http://{{ openstack_vip_address }}:{{keystone_port}}
 {% set memcached_cluster = [] %}
 {%- for host in groups.controller -%}
 {{ memcached_cluster.append( host+":"+'11211' ) }}
