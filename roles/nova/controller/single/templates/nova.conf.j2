@@ -49,6 +49,7 @@ username = nova
 password = {{ nova_user_password }}
 
 [neutron]
+url = http://{{ openstack_vip_address }}:9696
 auth_url = http://{{ openstack_vip_address }}:{{keystone_port}}
 auth_type = password
 project_domain_name = Default
