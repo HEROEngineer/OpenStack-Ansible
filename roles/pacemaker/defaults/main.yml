@@ -11,8 +11,20 @@ pe_error_series_max: pe-error-series-max={{ pe_error_series_max_parameter }}
 cluster_recheck_interval: cluster-recheck-interval={{ cluster_recheck_interval_parameter }}
 crm_configure: "{{ pe_warn_series_max }} {{ pe_input_series_max }} {{ pe_error_series_max }} {{ cluster_recheck_interval }}"
 
+# redis
+depth: "0"
+timeout: "60s"
+interval_depth: "45s"
+interval_master: "20s"
+interval_slave: "60s"
+master_role: "Master"
+slave_role: "Slave"
+monitor_depth: op monitor depth={{ depth }} timeout={{ timeout }} interval={{ interval_depth }}
+monitor_master: op monitor role={{ master_role }} depth={{ depth }} timeout={{ timeout }} interval={{ interval_master }}
+monitor_slave: op monitor role={{ slave_role }} depth={{ depth }} timeout={{ timeout }} interval={{ interval_slave }}
+
 # crm configure colocation and order
-colocation: "vip-with-haproxy inf: vip haproxy-clone ms_redis"
+colocation: "vip-with-haproxy inf: vip haproxy-clone ms_redis:Master"
 order: "haproxy-after-vip mandatory: vip haproxy-clone"
 # crm vip
 net_mask: "{{ ansible_default_ipv4.network }}/{{ ansible_default_ipv4.netmask }}"
