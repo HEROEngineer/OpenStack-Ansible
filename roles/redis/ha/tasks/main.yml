@@ -32,6 +32,10 @@
     dest: /opt/redis/
     remote_src: yes
 
+- name: Install build-essential
+  apt:
+    name: build-essential
+
 - name: Compile redis
   make:
     chdir: /opt/redis/redis-{{ redis_version }}
@@ -44,6 +48,3 @@
   service:
     name: redis
     state: stopped
-
-- name: Configure Pacemaker redis ocf
-  include: crm.yml
