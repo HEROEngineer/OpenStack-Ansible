@@ -10,7 +10,7 @@
     state: present
 
 - name: Generates corosync key
-  command: corosync-keygen
+  command: corosync-keygen -l
   args:
     creates: /etc/corosync/authkey
   when: inventory_hostname == groups['controller'][0]
@@ -28,3 +28,13 @@
     src: ./authkey 
     dest: /etc/corosync/authkey
   when: inventory_hostname != groups['controller'][0]
+
+- name: Change ocf redis
+  replace:
+    path: /usr/lib/ocf/resource.d/heartbeat/redis
+    regexp: "{{ item.src }}"
+    replace: "{{ item.replace }}"
+  with_items:
+    - { src: '/usr/bin/redis-server', replace: '/usr/local/bin/redis-server' }
+    - { src: '/usr/bin/redis-cli', replace: '/usr/local/bin/redis-cli' }
+    - { src: 'redis-server.pid', replace: 'redis.pid' }
