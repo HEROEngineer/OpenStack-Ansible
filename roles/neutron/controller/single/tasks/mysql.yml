@@ -19,8 +19,3 @@
   shell: neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head
   args:
     executable: /bin/sh
-
-- name: Populate the Network Lbaas service database
-  shell: neutron-db-manage --subproject neutron-lbaas upgrade head
-  args:
-    executable: /bin/sh
