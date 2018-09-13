@@ -41,7 +41,6 @@ external_ntp_servers: "tock.stdtime.gov.tw"
 ########################
 enable_glance_nfs: "yes"
 nfs_src_path: "/home/localadmin/images"
-nfs_server_ip: "10.50.2.12"
 
 ################
 # Cinder options
@@ -76,5 +75,9 @@ grafana_admin_password: "openstack"
 # HAproxy options
 ####################
 clustercheck_password: "openstack"
+haproxy_state_password: "openstack"
 
-
+####################
+# NFS options
+####################
+nfs_server_ip: "10.50.2.12"
