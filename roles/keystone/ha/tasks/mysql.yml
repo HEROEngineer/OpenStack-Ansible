@@ -1,9 +1,3 @@
-#- name: Create the keystone database
-#  mysql_db:
-#    login_user: root
-#    name: keystone
- #   state: present
-
 - name: Create the keystone database
   mysql_db:
     login_user: root
