@@ -1,4 +1,4 @@
-- name: haproxy.cfg to /etc/haproxy/haproxy.cfg
+- name: Copy haproxy.cfg to /etc/haproxy/haproxy.cfg
   template:
     src: haproxy.cfg.j2
     dest: /etc/haproxy/haproxy.cfg

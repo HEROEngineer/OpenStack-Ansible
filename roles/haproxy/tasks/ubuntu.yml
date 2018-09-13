@@ -17,4 +17,4 @@
   service:
     enabled: yes
     name: xinetd 
-    state: started
+    state: restarted
