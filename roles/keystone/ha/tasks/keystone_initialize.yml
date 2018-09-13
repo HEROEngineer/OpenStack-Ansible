@@ -2,13 +2,24 @@
   shell: keystone-manage db_sync
   args:
     executable: /bin/sh
+  when: inventory_hostname == groups['controller'][0]
 
 - name: Initialize Fernet key repositories
   command: "{{ item }}"
   with_items:
     - keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
     - keystone-manage credential_setup --keystone-user keystone --keystone-group keystone
-  when: inventory_hostname == groups['controller'][0]
+
+#- name: Copy keystone Fernet key
+#  synchronize: 
+#    src: "{{ item.src }}" 
+#    dest: "{{ item.dest }}"
+#    recursive: yes
+#  delegate_to: "{{ groups.controller[0] }}"
+#  with_items:
+#    - { src: "/etc/keystone/credential-keys", dest: "/etc/keystone/credential-keys" }
+#    - { src: "/etc/keystone/fernet-keys", dest: "/etc/keystone/fernet-keys" }
+#  when: inventory_hostname != groups['controller'][0]
 
 - name: Bootstrap the Identity service
   shell: | 
