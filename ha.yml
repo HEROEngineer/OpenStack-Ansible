@@ -2,45 +2,45 @@
 - hosts: controller
   become: yes
   roles:
-#    - { role: common/hostname }
-#    - { role: chrony }
-#    - { role: package }
-#    - { role: common/firewall }
-#    - { role: mariadb/mariadb-galera }
-#    - { role: common/apparmor }
-#    - { role: rabbitmq/multiple }
-#    - { role: memcached}
-#    - { role: etcd }
-#    - { role: haproxy }
-#    - { role: redis/ha }
-#    - { role: pacemaker }
-#    - { role: keystone/ha }
-#    - { role: glance/ha }
-#    - { role: nova/controller/ha }
-#    - { role: neutron/controller/ha }
-#    - { role: horizon }
-#    - { role: cinder/controller/ha }
-#    - { role: heat/ha }
-#    - { role: aodh/ha }
-#    - { role: gnocchi/ha }
-#    - { role: ceilometer/controller/ha }
-#    - { role: docker }
-#    - { role: grafana }
+    - { role: common/hostname }
+    - { role: chrony }
+    - { role: package }
+    - { role: common/firewall }
+    - { role: mariadb/mariadb-galera }
+    - { role: common/apparmor }
+    - { role: rabbitmq/multiple }
+    - { role: memcached}
+    - { role: etcd }
+    - { role: haproxy }
+    - { role: redis/ha }
+    - { role: pacemaker }
+    - { role: keystone/ha }
+    - { role: glance/ha }
+    - { role: nova/controller/ha }
+    - { role: neutron/controller/ha }
+    - { role: horizon }
+    - { role: cinder/controller/ha }
+    - { role: heat/ha }
+    - { role: aodh/ha }
+    - { role: gnocchi/ha }
+    - { role: ceilometer/controller/ha }
+    - { role: docker }
+    - { role: grafana }
 
-#- hosts: compute
-#  become: yes
-#  roles:
-#    - { role: common/hostname }
-#    - { role: chrony }
-#    - { role: package }
-#    - { role: nova/compute}
-#    - { role: neutron/compute }
-#    - { role: ceilometer/compute }
+- hosts: compute
+  become: yes
+  roles:
+    - { role: common/hostname }
+    - { role: chrony }
+    - { role: package }
+    - { role: nova/compute}
+    - { role: neutron/compute }
+    - { role: ceilometer/compute }
 
-#- hosts: storage
-#  become: yes
-#  roles:
-#    - { role: common/hostname }
-#    - { role: chrony }
-#    - { role: package }
-#    - { role: cinder/storage }
+- hosts: storage
+  become: yes
+  roles:
+    - { role: common/hostname }
+    - { role: chrony }
+    - { role: package }
+    - { role: cinder/storage }
