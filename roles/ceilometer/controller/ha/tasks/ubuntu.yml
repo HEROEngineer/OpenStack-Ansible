@@ -8,9 +8,9 @@
 - name: Copy ceilometer config
   include: config.yml
 
-#- name: Prerequisites Database
-#  include: mysql.yml
-#  when: inventory_hostname == groups['controller'][0]
+- name: Prerequisites Database
+  include: mysql.yml
+  when: inventory_hostname == groups['controller'][0]
 
 - name: Restart the Telemetry  service
   service:
