@@ -1,0 +1,19 @@
+- name: Create Grafana database
+  mysql_db:
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    name: grafana
+    state: present
+
+- name: Grant proper access to the Grafana database
+  mysql_user:
+    login_user: root
+    login_password: "{{ mysql_root_password }}"
+    name: grafana
+    password: "{{ grafana_db_password }}"
+    priv: "grafana.*:ALL"
+    state: present
+    host: "{{ item }}"
+  with_items:
+    - localhost
+    - "%"

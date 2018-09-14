@@ -1,40 +1,35 @@
-- name: Create grafana dir
-  file:
-    path: "{{ item }}"
-    state: directory
-    owner: 472
-    group: 472
-    mode: 0755
-  with_items:
-    - /etc/grafana/provisioning/dashboards
-    - /etc/grafana/provisioning/datasources
+- name: Download Grafana
+  get_url:
+    url: https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana_5.1.0_amd64.deb
+    dest: /tmp/grafana_5.1.0_amd64.deb 
 
-- name: Copy gnocchi_datasoure file
-  template:
-    src: gnocchi_datasoure.yml.j2
-    dest: /etc/grafana/provisioning/datasources/gnocchi_datasoure.yml
+- name: Install Grafana
+  apt:
+    name: libfontconfig
 
-- name: Copy openstack-gnocchi dashborad file
-  template:
-    src: openstack-gnocchi-instance-metrics_rev1.json.j2
-    dest: /etc/grafana/provisioning/dashboards/openstack-gnocchi-instance-metrics_rev1.json
+- name: Install Grafana
+  apt:
+    deb: /tmp/grafana_5.1.0_amd64.deb
 
-- name: Copy openstack-gnocchi dashborad file
-  template:
-    src: dashboard.yaml.j2
-    dest: /etc/grafana/provisioning/dashboards/dashboard.yaml
-
-- name: Run grafana container
-  docker_container:
-    name: grafana
-    image: grafana/grafana
+- name: Start Grafana
+  service:
+    name: grafana-server
+    enabled: yes
     state: started
-    volumes: 
-      - /etc/grafana/provisioning:/etc/grafana/provisioning
-      - grafana-storage:/var/lib/grafana
-    ports:
-      - "3000:{{ grafana_port }}"
-    env:
-      GF_SERVER_ROOT_URL: "http://{{ openstack_vip_address }}"
-      GF_SECURITY_ADMIN_PASSWORD: "{{ grafana_admin_password }}"
-      GF_INSTALL_PLUGINS: "gnocchixyz-gnocchi-datasource"
+
+- name: Create database
+  include: mysql.yml
+  when: inventory_hostname == groups['controller'][0]
+
+- name: Install Grafana plugin gnocchi-datasource
+  command: grafana-cli plugins install gnocchixyz-gnocchi-datasource
+
+- name: Configure grafana
+  include: config.yml
+
+- name: Restart Grafana
+  service:
+    name: grafana-server
+    enabled: yes
+    state: restarted
+

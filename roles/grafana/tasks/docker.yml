@@ -1,0 +1,40 @@
+- name: Create grafana dir
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: 472
+    group: 472
+    mode: 0755
+  with_items:
+    - /etc/grafana/provisioning/dashboards
+    - /etc/grafana/provisioning/datasources
+
+- name: Copy gnocchi_datasoure file
+  template:
+    src: gnocchi_datasoure.yml.j2
+    dest: /etc/grafana/provisioning/datasources/gnocchi_datasoure.yml
+
+- name: Copy openstack-gnocchi dashborad file
+  template:
+    src: openstack-gnocchi-instance-metrics_rev1.json.j2
+    dest: /etc/grafana/provisioning/dashboards/openstack-gnocchi-instance-metrics_rev1.json
+
+- name: Copy openstack-gnocchi dashborad file
+  template:
+    src: dashboard.yaml.j2
+    dest: /etc/grafana/provisioning/dashboards/dashboard.yaml
+
+- name: Run grafana container
+  docker_container:
+    name: grafana
+    image: grafana/grafana
+    state: started
+    volumes: 
+      - /etc/grafana/provisioning:/etc/grafana/provisioning
+      - grafana-storage:/var/lib/grafana
+    ports:
+      - "3000:{{ grafana_port }}"
+    env:
+      GF_SERVER_ROOT_URL: "http://{{ openstack_vip_address }}"
+      GF_SECURITY_ADMIN_PASSWORD: "{{ grafana_admin_password }}"
+      GF_INSTALL_PLUGINS: "gnocchixyz-gnocchi-datasource"

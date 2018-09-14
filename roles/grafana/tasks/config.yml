@@ -1,0 +1,11 @@
+- name: Copy gnocchi_datasoure file
+  template:
+    src: gnocchi_datasoure.yml.j2
+    dest: /etc/grafana/provisioning/datasources/gnocchi_datasoure.yml
+    group: grafana
+
+- name: Copy grafana.ini to /etc/grafana/
+  template:
+    src: grafana.ini.j2
+    dest: /etc/grafana/grafana.ini
+    group: grafana
