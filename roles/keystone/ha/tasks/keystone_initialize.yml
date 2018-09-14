@@ -10,16 +10,31 @@
     - keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
     - keystone-manage credential_setup --keystone-user keystone --keystone-group keystone
 
-#- name: Copy keystone Fernet key
-#  synchronize: 
-#    src: "{{ item.src }}" 
-#    dest: "{{ item.dest }}"
-#    recursive: yes
-#  delegate_to: "{{ groups.controller[0] }}"
-#  with_items:
-#    - { src: "/etc/keystone/credential-keys", dest: "/etc/keystone/credential-keys" }
-#    - { src: "/etc/keystone/fernet-keys", dest: "/etc/keystone/fernet-keys" }
-#  when: inventory_hostname != groups['controller'][0]
+- name: Fetching keystone credential-keys and fernet-keys to /tmp
+  fetch:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    flat: yes
+  with_items:
+    - { src: "/etc/keystone/credential-keys/0", dest: "/tmp/c_0" }
+    - { src: "/etc/keystone/credential-keys/1", dest: "/tmp/c_1" }
+    - { src: "/etc/keystone/fernet-keys/0", dest: "/tmp/f_0" }
+    - { src: "/etc/keystone/fernet-keys/1", dest: "/tmp/f_1" }
+  when: inventory_hostname == groups['controller'][0]
+
+- name: Copy credential-keys and fernet-keys to other nodes
+  copy: 
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: 0600
+    owner: keystone
+    group: keystone
+  with_items:
+    - { src: "/tmp/c_0", dest: "/etc/keystone/credential-keys/0" }
+    - { src: "/tmp/c_1", dest: "/etc/keystone/credential-keys/1" }
+    - { src: "/tmp/f_0", dest: "/etc/keystone/fernet-keys/0" }
+    - { src: "/tmp/f_1", dest: "/etc/keystone/fernet-keys/1" }
+  when: inventory_hostname != groups['controller'][0]
 
 - name: Bootstrap the Identity service
   shell: | 
@@ -29,4 +44,3 @@
     --bootstrap-internal-url {{ keystone_url }} \
     --bootstrap-public-url {{ keystone_url }} \
     --bootstrap-region-id RegionOne
-
