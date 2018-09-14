@@ -6,7 +6,7 @@
     - heat-api-cfn 
     - heat-engine
 
-- name: Copy glance.conf
+- name: Copy heat.conf
   include: config.yml
 
 - name: Prerequisites Database
