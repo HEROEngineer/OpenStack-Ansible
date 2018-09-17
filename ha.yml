@@ -24,7 +24,7 @@
     - { role: aodh/ha }
     - { role: gnocchi/ha }
     - { role: ceilometer/controller/ha }
-    - { role: docker }
+#    - { role: docker }
     - { role: grafana }
 
 - hosts: compute
