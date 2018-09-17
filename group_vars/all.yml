@@ -68,8 +68,9 @@ gnocchi_db_password: "openstack"
 ####################
 # Grafana options
 ####################
-grafana_port: "3000"
 grafana_admin_password: "openstack"
+grafana_db_password: "openstack"
+grafana_port: "3000"
 
 ####################
 # HAproxy options
