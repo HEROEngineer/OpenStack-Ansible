@@ -23,7 +23,7 @@ rabbitmq_password: "openstack"
 ####################
 # Networking options
 ####################
-network_manage_interface: "ens3"
+network_manage_interface: "ens9"
 network_public_interface: "ens3"
 #network_storge_interface:
 #network_vm_private_interface:
