@@ -1,7 +1,5 @@
 - name: Populate the Identity service database
-  shell: keystone-manage db_sync
-  args:
-    executable: /bin/sh
+  command: keystone-manage db_sync
   when: inventory_hostname == groups['controller'][0]
 
 - name: Initialize Fernet key repositories
