@@ -1,6 +1,6 @@
 {% macro initial_cluster() -%}
 {% for host in groups['controller'] -%}
-  {{ hostvars[host]['ansible_hostname'] }}=http://{{ hostvars[host].ansible_default_ipv4.address }}:{{ etcd_peer_port }}
+  {{ hostvars[host]['ansible_hostname'] }}=http://{{ hostvars[host]['ansible_%s' | format(network_manage_interface)].ipv4.address }}:{{ etcd_peer_port }}
   {%- if not loop.last -%},{%- endif -%}
 {%- endfor -%}
 {% endmacro -%}
