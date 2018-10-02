@@ -2,7 +2,6 @@
 Deploy OpenStack Queens By Ansible
 
 Feature list:
-* ~~ HA ontroller ~~
 * ELK
 
 This ansible contains OpenStack service:
