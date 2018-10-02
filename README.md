@@ -27,7 +27,7 @@ Prepare ansible node and openstack node
 Install pip
 <pre><code>
 apt update -y
-apt install python-pip -y
+apt install python-pip python-netaddr -y
 </code></pre>
 
 Install and upgrade ansible
