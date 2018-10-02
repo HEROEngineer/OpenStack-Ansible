@@ -1,0 +1,5 @@
+- name: Copy prometheus.yml to /etc/prometheus/
+  template:
+    src: prometheus.yml.j2
+    dest: /etc/prometheus/
+  when: inventory_hostname == groups['controller'][0]
