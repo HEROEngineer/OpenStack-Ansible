@@ -1,9 +1,9 @@
 [all]
-controller1    ansible_host=10.50.2.4
-controller2    ansible_host=10.50.2.5
-controller3    ansible_host=10.50.2.6
-compute1      ansible_host=10.50.2.7
-compute2      ansible_host=10.50.2.13
+controller1    ansible_host=192.168.3.4
+controller2    ansible_host=192.168.3.5
+controller3    ansible_host=192.168.3.6
+compute1      ansible_host=192.168.3.7
+compute2      ansible_host=192.168.3.13
 storage       ansible_host=10.50.2.8
 
 [controller]
