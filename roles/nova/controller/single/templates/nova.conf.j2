@@ -3,7 +3,7 @@
 enabled_apis = osapi_compute,metadata
 {% endif %}
 state_path = /var/lib/nova
-my_ip = {{ ansible_default_ipv4.address }}
+my_ip = {{ hostvars[inventory_hostname]['ansible_%s' | format(network_manage_interface)].ipv4.address }}
 use_neutron = true
 firewall_driver = nova.virt.firewall.NoopFirewallDriver
 {% set rabbitmq_cluster = [] %}

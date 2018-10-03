@@ -11,7 +11,7 @@ lock_path = /var/lock/cinder
 volumes_dir = /var/lib/cinder/volumes
 enabled_backends = lvm
 auth_strategy = keystone
-my_ip = {{ ansible_default_ipv4.address }}
+my_ip = {{ hostvars[inventory_hostname]['ansible_%s' | format(network_manage_interface)].ipv4.address }}
 {% set rabbitmq_cluster = [] %}
 {%- for host in groups.controller -%}
 {{ rabbitmq_cluster.append( rabbitmq_user+":"+rabbitmq_password+"@"+host ) }}

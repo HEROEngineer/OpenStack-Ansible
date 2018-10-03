@@ -11,7 +11,7 @@ lock_path = /var/lock/cinder
 volumes_dir = /var/lib/cinder/volumes
 enabled_backends = lvm
 auth_strategy = keystone
-my_ip = {{ ansible_default_ipv4.address }}
+my_ip = {{ hostvars[inventory_hostname]['ansible_%s' | format(network_manage_interface)].ipv4.address }}
 glance_api_servers = http://{{ openstack_vip_address }}:9292
 {% set rabbitmq_cluster = [] %}
 {%- for host in groups.controller -%}

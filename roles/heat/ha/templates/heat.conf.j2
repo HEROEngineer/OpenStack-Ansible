@@ -46,10 +46,10 @@ password = {{ heat_user_password }}
 user_domain_name = Default
 
 [heat_api]
-bind_host = {{ ansible_default_ipv4.address }}
+bind_host = {{ hostvars[inventory_hostname]['ansible_%s' | format(network_manage_interface)].ipv4.address }}
 
 [heat_api_cfn]
-bind_host = {{ ansible_default_ipv4.address }}
+bind_host = {{ hostvars[inventory_hostname]['ansible_%s' | format(network_manage_interface)].ipv4.address }}
 
 #[oslo_messaging_rabbit]
 #rabbit_retry_interval = 1

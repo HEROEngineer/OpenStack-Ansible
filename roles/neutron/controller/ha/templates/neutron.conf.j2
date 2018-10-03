@@ -12,7 +12,7 @@ transport_url = rabbit://{{ rabbitmq_cluster|join(',') }}
 auth_strategy = keystone
 notify_nova_on_port_status_changes = true
 notify_nova_on_port_data_changes = true
-bind_host = {{ ansible_default_ipv4.address }}
+bind_host = {{ hostvars[inventory_hostname]['ansible_%s' | format(network_manage_interface)].ipv4.address }}
 
 # linux bridge HA settings
 l3_ha = True

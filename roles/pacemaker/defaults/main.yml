@@ -27,9 +27,9 @@ monitor_slave: op monitor role={{ slave_role }} depth={{ depth }} timeout={{ tim
 colocation: "vip-with-haproxy inf: vip haproxy-clone ms_redis:Master"
 order: "haproxy-after-vip mandatory: vip haproxy-clone"
 # crm vip
-net_mask: "{{ ansible_default_ipv4.network }}/{{ ansible_default_ipv4.netmask }}"
+net_mask: "{{ hostvars[inventory_hostname]['ansible_%s' | format(network_manage_interface)].ipv4.address }}/{{ hostvars[inventory_hostname]['ansible_%s' | format(network_manage_interface)].ipv4.netmask }}"
 net_cidr: "{{ net_mask | ipaddr('prefix') }}"
 interval: "30s"
-crm_vip: ocf:heartbeat:IPaddr2 params ip="{{ openstack_vip_address }}" cidr_netmask="{{ net_cidr }}" op monitor interval="{{ interval }}"
+crm_vip: ocf:heartbeat:IPaddr2 params ip="{{ openstack_vip_address }}" nic="{{ network_manage_interface }}"  cidr_netmask="{{ net_cidr }}" op monitor interval="{{ interval }}"
 
 

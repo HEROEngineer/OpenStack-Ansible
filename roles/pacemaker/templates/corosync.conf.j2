@@ -8,7 +8,7 @@ totem {
       rrp_mode: active
       interface {
              ringnumber: 0
-             bindnetaddr: {{ ansible_default_ipv4.address }}
+             bindnetaddr: {{ hostvars[inventory_hostname]['ansible_%s' | format(network_manage_interface)].ipv4.address }}
              broadcast: yes
              mcastport: 5405
      }
@@ -18,7 +18,7 @@ totem {
 nodelist {
 {% for node in groups['controller']|sort %}
        node {
-            ring0_addr: {{ hostvars[node].ansible_default_ipv4.address }}
+            ring0_addr: {{ hostvars[node]['ansible_%s' | format(network_manage_interface)].ipv4.address }}
             name: {{ node }}
             nodeid: {{ loop.index }}
        }

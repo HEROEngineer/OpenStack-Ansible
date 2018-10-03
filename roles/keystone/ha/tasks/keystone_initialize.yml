@@ -35,6 +35,8 @@
   when: inventory_hostname != groups['controller'][0]
 
 - name: Bootstrap the Identity service
+  pasue:
+    seconds: 20
   shell: | 
     keystone-manage bootstrap \
     --bootstrap-password {{ keystone_admin_password }} \

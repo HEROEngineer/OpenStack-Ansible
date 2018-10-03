@@ -29,7 +29,7 @@
 ;protocol = http
 
 # The ip address to bind to, empty will bind to all interfaces
-http_addr = {{ ansible_default_ipv4.address }}
+http_addr = {{ hostvars[inventory_hostname]['ansible_%s' | format(network_manage_interface)].ipv4.address }}
 
 # The http port  to use
 ;http_port = {{ grafana_port }}
