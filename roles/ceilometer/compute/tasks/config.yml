@@ -7,3 +7,8 @@
   template:
     src: polling.yml.j2
     dest: /etc/ceilometer/polling.yaml
+
+- name: Copy pipeline.yml to /etc/ceilometer/
+  template:
+    src: pipeline.yml.j2
+    dest: /etc/ceilometer/pipeline.yaml
