@@ -1,4 +1,8 @@
 [DEFAULT]
+{% set rabbitmq_cluster = [] %}
+{%- for host in groups.controller -%}
+{{ rabbitmq_cluster.append( rabbitmq_user+":"+rabbitmq_password+"@"+host ) }}
+{%- endfor -%}
 transport_url = rabbit://{{ rabbitmq_user }}:{{ rabbitmq_password }}@{{ openstack_vip_address }}
 
 [service_credentials]
@@ -11,3 +15,6 @@ username = ceilometer
 password = {{ ceilometer_user_password }}
 interface = internalURL
 region_name = RegionOne
+
+[oslo_messaging_notifications]
+transport_url = rabbit://{{ rabbitmq_cluster|join(',') }}
