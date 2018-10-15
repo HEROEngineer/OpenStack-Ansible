@@ -32,7 +32,7 @@
 http_addr = {{ hostvars[inventory_hostname]['ansible_%s' | format(network_manage_interface)].ipv4.address }}
 
 # The http port  to use
-;http_port = {{ grafana_port }}
+http_port = {{ grafana_port }}
 
 # The public facing domain name used to access grafana from a browser
 ;domain = localhost
@@ -99,7 +99,7 @@ log_queries =
 #################################### Session ####################################
 [session]
 # Either "memory", "file", "redis", "mysql", "postgres", default is "file"
-;provider = file
+#provider = redis
 
 # Provider config options
 # memory: not have any config yet
@@ -107,16 +107,17 @@ log_queries =
 # redis: config like redis server e.g. `addr=127.0.0.1:6379,pool_size=100,db=grafana`
 # mysql: go-sql-driver/mysql dsn config string, e.g. `user:password@tcp(127.0.0.1:3306)/database_name`
 # postgres: user=a password=b host=localhost port=5432 dbname=c sslmode=disable
-;provider_config = sessions
+#provider_config = addr={{ openstack_vip_address }}:6379,pool_size=100,password=97d494ddd4568660740b
 
 # Session cookie name
-;cookie_name = grafana_sess
+#cookie_name = grafana_sess
 
 # If you use session in https only, default is false
-;cookie_secure = false
+#cookie_secure = false
 
 # Session life time, default is 86400
-;session_life_time = 86400
+#session_life_time = 86400
+
 
 #################################### Data proxy ###########################
 [dataproxy]
@@ -145,10 +146,10 @@ log_queries =
 #################################### Security ####################################
 [security]
 # default admin user, created on startup
-;admin_user = admin
+admin_user = admin
 
 # default admin password, can be changed before first start of grafana,  or in profile settings
-;admin_password = admin
+admin_password = {{ grafana_admin_password }}
 
 # used for signing
 ;secret_key = SW2YcwTIb9zpOOhoPsMm
