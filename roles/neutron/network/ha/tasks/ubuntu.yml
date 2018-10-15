@@ -1,0 +1,22 @@
+- name: Install neutron
+  apt:
+    name: "{{ item }}"
+  with_items:
+    - neutron-plugin-ml2
+    - neutron-linuxbridge-agent 
+    - neutron-l3-agent 
+    - neutron-dhcp-agent
+    - neutron-metadata-agent
+
+- name: Copy neutron.conf
+  include: config.yml
+
+- name: Restart the Neutron service
+  service:
+    name: "{{ item }}"
+    state: restarted
+  with_items:
+    - neutron-linuxbridge-agent 
+    - neutron-l3-agent 
+    - neutron-dhcp-agent
+    - neutron-metadata-agent
