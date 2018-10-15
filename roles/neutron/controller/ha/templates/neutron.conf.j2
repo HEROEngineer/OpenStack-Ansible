@@ -17,7 +17,7 @@ bind_host = {{ hostvars[inventory_hostname]['ansible_%s' | format(network_manage
 # linux bridge HA settings
 l3_ha = True
 max_l3_agents_per_router = 0
-dhcp_agents_per_network = {{ groups['controller'] | length }}
+dhcp_agents_per_network = {{ groups['network'] | length }}
 
 
 [agent]
