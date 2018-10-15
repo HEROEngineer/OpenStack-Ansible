@@ -20,7 +20,7 @@
 
 - name: Prerequisites Database
   include: mysql.yml
-  when: inventory_hostname == groups['controller'][0]
+  run_once: true
 
 - name: Restart the Gnocchi service
   service:
@@ -29,3 +29,11 @@
   with_items:
     - apache2
     - gnocchi-metricd
+
+- name: Change permission /var/lib/gnocchi to gnocchi
+  file:
+    path: /var/lib/gnocchi
+    owner: gnocchi
+    group: gnocchi
+    recurse: yes
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
