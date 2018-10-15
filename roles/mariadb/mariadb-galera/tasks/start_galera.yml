@@ -5,13 +5,14 @@
 
 - name: Start galera new cluster
   command: galera_new_cluster
-  when: inventory_hostname == groups['controller'][0]
+  run_once: true
 
 - name: Start Primary mysql service
   service:
     name: mysql
     state: started
-  when: inventory_hostname == groups['controller'][0]
+  run_once: true
+
 
 - name: Start another mysql service
   service:

@@ -77,7 +77,7 @@ enabled = true
 {%- for host in groups.controller -%}
 {{ memcached_cluster.append( host+":"+'11211' ) }}
 {%- endfor -%}
-memcached_servers = {{ memcached_cluster|join(',') }}
+memcache_servers = {{ memcached_cluster|join(',') }}
 backend = oslo_cache.memcache_pool
 
 [vnc]

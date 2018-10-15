@@ -8,4 +8,4 @@
 
 - name: Create Cinder dependency
   include: setting.yml
-  when: inventory_hostname == groups['controller'][0]
+  run_once: true

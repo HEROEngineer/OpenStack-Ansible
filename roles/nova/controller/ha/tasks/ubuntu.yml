@@ -14,7 +14,7 @@
 
 - name: Prerequisites Database
   include: mysql.yml
-  when: inventory_hostname == groups['controller'][0]
+  run_once: true
 
 - name: Restart the Nova service
   service:

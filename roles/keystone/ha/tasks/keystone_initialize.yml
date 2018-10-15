@@ -1,6 +1,6 @@
 - name: Populate the Identity service database
   command: keystone-manage db_sync
-  when: inventory_hostname == groups['controller'][0]
+  run_once: True
 
 - name: Initialize Fernet key repositories
   command: "{{ item }}"
@@ -18,7 +18,7 @@
     - { src: "/etc/keystone/credential-keys/1", dest: "/tmp/c_1" }
     - { src: "/etc/keystone/fernet-keys/0", dest: "/tmp/f_0" }
     - { src: "/etc/keystone/fernet-keys/1", dest: "/tmp/f_1" }
-  when: inventory_hostname == groups['controller'][0]
+  run_once: True
 
 - name: Copy credential-keys and fernet-keys to other nodes
   copy: 
@@ -35,8 +35,6 @@
   when: inventory_hostname != groups['controller'][0]
 
 - name: Bootstrap the Identity service
-  pasue:
-    seconds: 20
   shell: | 
     keystone-manage bootstrap \
     --bootstrap-password {{ keystone_admin_password }} \
@@ -44,3 +42,7 @@
     --bootstrap-internal-url {{ keystone_url }} \
     --bootstrap-public-url {{ keystone_url }} \
     --bootstrap-region-id RegionOne
+  retries: 10
+  delay: 5
+  register: result
+  until: result.rc == 0

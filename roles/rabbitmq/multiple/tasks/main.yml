@@ -18,4 +18,4 @@
         configure_priv: .*
         read_priv: .*
         write_priv: .*
-  when: inventory_hostname == groups['controller'][0]
+  run_once: true

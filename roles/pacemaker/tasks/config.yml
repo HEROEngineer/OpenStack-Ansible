@@ -13,19 +13,19 @@
   command: corosync-keygen -l
   args:
     creates: /etc/corosync/authkey
-  when: inventory_hostname == groups['controller'][0]
+  run_once: true
 
 
 - name: Fetching /etc/corosync/authkey to /tmp
   fetch:
     src: /etc/corosync/authkey
-    dest: ./authkey
+    dest: /tmp/authkey
     flat: yes
   run_once: true
 
 - name: Copy authkey to other nodes
   copy: 
-    src: ./authkey 
+    src: /tmp/authkey 
     dest: /etc/corosync/authkey
   when: inventory_hostname != groups['controller'][0]
 

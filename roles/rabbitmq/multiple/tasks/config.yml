@@ -29,4 +29,4 @@
     pattern: ^(?!amq\.).*
     tags:
       ha-mode: all
-  when: inventory_hostname == groups['controller'][0]
+  run_once: true

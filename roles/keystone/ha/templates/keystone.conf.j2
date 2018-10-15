@@ -23,7 +23,8 @@ provider = fernet
 {%- for host in groups.controller -%}
 {{ memcached_cluster.append( host+":"+'11211' ) }}
 {%- endfor -%}
-
+backend = oslo_cache.memcache_pool
+enabled = True
 memcached_servers = {{ memcached_cluster|join(',') }}
 
 [oslo_messaging_rabbit]

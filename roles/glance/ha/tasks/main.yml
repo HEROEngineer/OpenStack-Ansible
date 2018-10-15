@@ -8,7 +8,7 @@
 
 - name: Create glance dependency
   include: setting.yml
-  when: inventory_hostname == groups['controller'][0]
+  run_once: true
 
 - name: Install and Mount NFS dir
   include: nfs.yml
