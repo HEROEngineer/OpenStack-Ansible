@@ -19,7 +19,7 @@
 
 - name: Create database
   include: mysql.yml
-  when: inventory_hostname == groups['controller'][0]
+  run_once: true
 
 - name: Install Grafana plugin gnocchi-datasource
   command: grafana-cli plugins install gnocchixyz-gnocchi-datasource
@@ -32,4 +32,5 @@
     name: grafana-server
     enabled: yes
     state: restarted
-
+  retries: 10
+  delay: 5
