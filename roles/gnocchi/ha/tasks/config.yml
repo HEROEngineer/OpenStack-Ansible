@@ -9,13 +9,13 @@
     dest: /etc/apache2/sites-available/gnocchi-api.conf
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
-- name: Change permission /var/lib/gnocchi to gnocchi
-  file:
-    path: /var/lib/gnocchi
-    owner: gnocchi
-    group: gnocchi
-    recurse: yes
-  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+#- name: Change permission /var/lib/gnocchi to gnocchi
+#  file:
+#    path: /var/lib/gnocchi
+#    owner: gnocchi
+#    group: gnocchi
+#    recurse: yes
+#  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
 - name: Mount gnocchi nfs dir
   include: nfs.yml
