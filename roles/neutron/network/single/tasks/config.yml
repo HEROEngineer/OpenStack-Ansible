@@ -1,7 +1,7 @@
-- name: Copy neutron.conf to /etc/neutron/
-  template:
-    src: neutron.conf.j2
-    dest: /etc/neutron/neutron.conf
+#- name: Copy neutron.conf to /etc/neutron/
+#  template:
+#    src: neutron.conf.j2
+#    dest: /etc/neutron/neutron.conf
 
 - name: Copy ml2_conf.ini to /etc/neutron/plugins/ml2/
   template:
