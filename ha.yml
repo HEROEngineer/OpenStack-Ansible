@@ -37,6 +37,15 @@
     - { role: neutron/compute }
     - { role: ceilometer/compute }
 
+- hosts: network
+  become: yes
+  roles:
+    - { role: common/hostname }
+    - { role: chrony }
+    - { role: package }
+    - { role: neutron/network/ha }
+
+
 - hosts: storage
   become: yes
   roles:
