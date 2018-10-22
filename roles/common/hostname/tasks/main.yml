@@ -7,6 +7,7 @@
     dest: /etc/hosts
     line: "{{ openstack_vip_address }} {{ openstack_vip_hostname }}"
     state: present
+  when: "( groups['controller'] | length > 1)"
 
 - name: Add hostname to /etc/hosts
   lineinfile:
