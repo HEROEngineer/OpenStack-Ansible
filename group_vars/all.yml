@@ -23,12 +23,12 @@ rabbitmq_password: "openstack"
 ####################
 # Networking options
 ####################
-network_manage_interface: "ens9"
+network_manage_interface: "ens3"
 network_public_interface: "ens3"
+network_vm_private_interface: "ens9"
 #network_storge_interface:
-#network_vm_private_interface:
 
-openstack_vip_address: "192.168.3.3"
+openstack_vip_address: "10.50.2.3"
 openstack_vip_hostname: "controller"
 
 ################
