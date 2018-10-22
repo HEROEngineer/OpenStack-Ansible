@@ -11,3 +11,28 @@
     - localhost
     - 127.0.0.1
     - ::1
+
+#- name: Reload privilege tables
+#  command: 'mysql -uroot -popenstack -ne "{{ item }}"'
+#  with_items:
+#    - FLUSH PRIVILEGES
+#  changed_when: False
+
+#- name: Remove anonymous users
+#  mysql_user:
+#    name: ''
+#    host_all: yes
+#    state: absent
+
+#- name: Remove test database and access to it
+#  command: 'mysql -uroot -popenstack -ne "{{ item }}"'
+#  with_items:
+#    - DROP DATABASE IF EXISTS test
+#    - DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%'
+#  changed_when: False
+
+#- name: Reload privilege tables
+#  command: 'mysql -ne "{{ item }}"'
+#  with_items:
+#    - FLUSH PRIVILEGES
+#  changed_when: False
